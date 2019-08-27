@@ -1,27 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CheatTable CheatEngineTableVersion="28">
   <Forms>
-    <UDF1 Class="TCEForm" Encoding="Ascii85">=U}C]8%Gp_M/b,;kTC)/7#nOzT$QEE2og,X1u}Z@VIyf22fI=GYK[^]M5Ae^rwNxA$SY+aBB^zIFW@NUBIP$oo+/iem*4A:p37,_mC#.!#XxtT^=GY)F6ZaR(o!-H+=VHtOS@l7[NKmmwzoEQh}KcZHIqHScDuvU(-HYjoTPu%GT,!O*:7VxGD[%#+}HEI@KX/K8?p@YyAb=7ntbGz9O7Xk-]}N%*N+^k3UaZN8}j^b+mkWBp^Cu!^p{x?h_4H)jLgxQi_HLP%B92x=}1]%UqWp7c6[+hW#o{ZcL-yow/yMgKgjnUjK;1[[0qLyx%5!Af(gA2gSvbqi?N./2I}59a.O]G)Uwac,i98hrR{yK[ow+d/[WU,AM^LQn8yiL4Tq.6goh6ZwJ(*V$Qdn/jPJS+qHQdu8H+P64oHu+u{e-pe^KzX[9c#NYj(vZc0/c/??1xl9PH2X/_8Sf3v$Yg2bSgZv#Aq5pLz$oTz#Dc]j@5h28H*3m;$_L*;9LXR/4ekN3=}hp3)}ZNbOT^%Ik7Iz2B%1(,Z?508VBI$4L2brU!6p.wa}aEB,UT%mfUnNWL#IWwsR;^jZR(x$aZZy8op];i!}BcTLOly6;FwkZyi;u?*]5e$TIYCaAgoBD?,{UJRDk.pNp4vD9(xKNM+[c$EFDO$[x}go1P02txfmIn+l:Dh-DE0xZwUusowk#=i}#DnFGX-jt@GpVYf8n]LpM)]y{rr5c8,ij_q1i5-)6$^$pDetC%9HlLx+*$utyuwAytk3fkygc@qB;@R8kMutpw.b0@C#?iuIE3V:-TxLK/R.7$rFd^(PalJAC#$SSrw-SuAN7QcHu8?_CWMyF(M!c0wDzB]zT!jQNAY*pk3/,XDMnO5@O%Sn{K%9Ao9fpLm8zQL.ZnPK-+i5E0qo%UH2nk/6#Z84OBzOT8v(!+41?ZP0c,:0)iO{@*/iz(S2}4,[%xF(8eZy5q?B%XCRmza=1!UY)(UXvqoBlyd0M6C0gP8q27V2)C5}J7wDT]pC#O@4oFP8yh26Zf]*B$q[b:+{2dV2IV3Vx2Juaczmr4FLVVwehji[uq52f=VXfYk1)dlPn$1U01NzDgYu*R2xPRj9Mg25,KZ%x^yJvnAwMt7{5ovPjCnekcS(ehVb@KuvK6I,]$LNXSE[LM#_FBxFS]/_2ssoeXnP2wRP3RfI9W1CshwWp#?Z%#e]JlnRkxhJ-x2ULg[xW?f+@]y%Wz1Xwt}YrdwrRMNvKgjRjDapE?4Z+m)a1-;{f$ND(BiH^?J2cC(uh1Z*SY/l%V.@c?{foYQdNt,z)OycE.U[p1DelH1D5xv^C,jg,T(:K*A$2vOYsH0OO40Lo1-@8e1fJGa_GL;680}u#/y#XDHJe[G?hhKk}*:+021Nb?u[0zG(PC48*So}HCe?f:!$yG0E9s[Z2CCi+wS=225P*UL}AVrbIGb4zP*V!CdseAyZM=l^iYxR];jn$Lw]x{y+,f0@tM%gzzS0TB#0U3)So[t?%m_NRSQl3;#x%gzP/5QmO[!z#*A%WaWR)DR;6TB{(LK*C8uk6vnb(SE;OJcsIws{__Z}ByD(BHoq]2@p{;j:UuVwuW4pMj1h$Qcx{pj3zjQWiogAHekqFmH?@eBzilK*WZ%Y6Hf61yuK+%Ia:NFhfG[D-_Nad/9?$QrIIF#AV$1,4Ked0W@qHb=mW@onfpq*E]M3Lmhlmj^gV$SE3hVYmp^#c#?]YgAHPA!!g;ShEUbBLT7:Ol;SAVoJcX!RE8571o:{Eq!sEOulaV,Zg3fO)(jH%eiz)ijq_3)NxRr$xRouPQqPY;w/#rOF:WgBJ,h)=RgO{fJ#Lco*xm+r!u=Bp!x]4-aEZGvYC2-Sf/,II,o{+QI?q%t-Sgpa(,o*zIEWD]vGxx</UDF1>
+    <UDF1 Class="TCEForm" Encoding="Ascii85">=V8JS,cp%2Dbf-pD@BWMom:BJyDl:Zd]UcA+?[+^IE@JyO[NM#G!TVItSQ0,!nK[j:reTbMLW{H?N?VP]UKrHyF#QW?Nz)/t(vq$rUl}QKmP_)/Ue{%ji$95,mFq5eQTT0.mr5XwwGpJ.CIY.V3c.S).qP7SKVln1H(m4e^gziVEkAx;+#/v#482oU#hzf[Sod=YWV-./UOzM5,9qD)F)z#R[5z9kcZv!]0vuq4bL7BYB?bTTK-X.c#IO*Ebbk7nBEYhTuN(2mKbb{B(3F}r-w(JW)E0llQ2ex3t}L^K*(^PJXIj?OV@Ti;6(mWEZ_p+XrGUi)EezGiS]3IWwalb)eBj.j?z?G[m0/pG(([1w,?iaKhTSbVO{Sk6%Ehcj{Pw/;b(P(Aa@o7F{}%wi1x8K(0Mglze9$kk3Dke2j^l1?4Ux{Wvu}qy#3g.%Y2$.BNqo{]BxJypc8V*%:?/Oj:E],pr7@tdt7},g!:EsXN-.a8/?UuJggU^Y@]z_b?ylwQ?x.7]IdT4$szaUc:maxL40SlMMF5n2##3?.LMKUw8T}{M;GBxhT.=qg,#xvFlCM%8}v{4F4+@)r0.*e3EyAFeAl!J[kHt[m-H(p!BWz6^dVAaG4x!28J]VJuZ7dw?bu/^SmAY=KU8Tsyp^c}O*d3Sl!AL(2{{Jwz0=}}$@c8Pg7!R!=3q,D[g:LY]K{c8W.AVdr^3y0tb^v+Ved6*RaB{eW*^m9b{fb_zfo2A.S22b]5D?L8y}YB$79:k3*G2AsA/}nri/,T#E]^KTx@!!]J2S.rB%FzZ3bkNRLXb+BLZZY7b@o]yaqB{(oD0SQK#;CLRvY_m5n[Z?p]tYiZXAx3JGFB#.i(i62yRvs(d3nK+UxCaq$@.84{7aiKdFU)[:7TE8EhX8fOC$625=n%L-LU?B%8XD98I0#5;I3HNHa!Lf03G9Xmt@Fx[Fcqj[c54Obz-3(@.tQig.tAmf@HzUvTQ.{/OhxZJ]nV$RQ4sJotMjA9q0EQ-Y%yP=cqE)694;bR+:2h17NaZ45G+}!x:[(92uW:U7-14NO^Fctb1l3zgs1fxC$TDz[8n^a=6s39G9RO+nRhIHIjg{T*3?RukU@H}.isg7KGaY,cfCz;+GPzr(N(w!?xt1*-1qYG1pgnX$}hz)/gggj7-xdviBmtn36VT/XmYB1):psBA@x=7WAhJ/^rREPvKB.=]63Q6QQbI(^cy$E^?Nh2I%zL3pus/Bz0W1N2x.{pOz(gI-3XIGNri1{e:qBr6B*(!g0Jdq=hqE.B17^6*LiycX[98oNMJ2yT@iZ#T$,lJS7u[VwD@]7J:I:jh4r$rc.:$Ju;)L4c7i*vZQBb}8}BiL[1hoVepHqa6H57UaIG)JJDBTzrh4R([pZw*rT*Z(kl/#cn,la_jw-0NAJD:KYn9z^wr!}rRaBAz*xe4@%qL]}xpBs}K9dT!LS]!P^ZX[RkBE@aGp?tm={cCJElZ38kCg+{y#jGRl]%2K_foO11PZsM}$J?GMvkV67[n00qv+(Tc(LqZwQaaGx@h3m,^Jj]OgruOAwIY0E-O{#uUgON{8th_gM%%Ya1Jo6dr:z@R/Avcu?u_dj0NaGWvJ_X6n^KO{Xc=FDn!md[e%%[06w@h2kBEbv@xuaBw1oJ6=S#jdCnxFWjF_Xz%KC3Y1Gr)P=iO.G8GbBW5./GBjd/I{vocOHeCq8M,YdML{8jSfIa93(KvnIg_2}nE)tVuAR1DI7NK2;p.(T+dvf*=}[,%wb0KKq;Wq.ekpp*{@v!ROxmpX,:pk]:a.h/u]+G:n;ATw=;S)T}MDs[qp!3zK2v4^drQwM0Y_Z*9BLPf3wpEDO5e%R#%uWwc43KQ8mD.4/qRcWqAE!#2acQvHznK[$9DDG8tL@-3i2UT{?^@,?HU*hn.N/alwsVcd8ckzR0*bp}AGmWR5oSg(f,9pv;Igo[T;B+][q)V9Pr,i,MTVX@iP</UDF1>
   </Forms>
   <CheatEntries>
     <CheatEntry>
-      <ID>523</ID>
-      <Description>"Struct CamComponent"</Description>
-      <LastState Value="0.008343614638" RealAddress="23840CB52A0"/>
-      <VariableType>Float</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
+      <ID>540</ID>
+      <Description>"Landfall Game"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>231</ID>
+          <Description>"Health"</Description>
+          <VariableType>Float</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
+          <Offsets>
+            <Offset>178</Offset>
+            <Offset>7C8</Offset>
+            <Offset>390</Offset>
+            <Offset>30</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>246</ID>
+          <Description>"SP Timer"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
+          <Offsets>
+            <Offset>F8</Offset>
+            <Offset>1F0</Offset>
+            <Offset>2C0</Offset>
+            <Offset>390</Offset>
+            <Offset>30</Offset>
+          </Offsets>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>160</ID>
+      <Description>"LibOVR"</Description>
+      <LastState Value="9.38724727098368E-323" RealAddress="1DB22D9E550"/>
+      <Color>008000</Color>
+      <VariableType>Double</VariableType>
+      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
       <Offsets>
-        <Offset>0</Offset>
-        <Offset>390</Offset>
-        <Offset>58</Offset>
-        <Offset>278</Offset>
-        <Offset>8</Offset>
+        <Offset>4E8</Offset>
       </Offsets>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>539</ID>
+          <Description>"X"</Description>
+          <LastState Value="-0.517918940491415" RealAddress="1DB22D9E6C8"/>
+          <Color>008000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>660</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>158</ID>
+          <Description>"Y"</Description>
+          <LastState Value="0.160536825370406" RealAddress="1DB22D9E6D0"/>
+          <Color>008000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>668</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>157</ID>
+          <Description>"Z"</Description>
+          <LastState Value="-0.274703881628385" RealAddress="1DB22D9E6D8"/>
+          <Color>008000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>670</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>186</ID>
+          <Description>"Qy"</Description>
+          <LastState Value="0.0454422937677431" RealAddress="1DB22D9E6B0"/>
+          <Color>0080FF</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>648</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>179</ID>
+          <Description>"Qy HMD"</Description>
+          <LastState Value="-0.0454422937677431" RealAddress="1DB22D9E6E8"/>
+          <Color>0080FF</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>680</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>194</ID>
+          <Description>"Qw"</Description>
+          <LastState Value="0.998966965388309" RealAddress="1DB22D9E6C0"/>
+          <Color>0080FF</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>658</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>180</ID>
+          <Description>"Qw HMD"</Description>
+          <LastState Value="0.998966965388309" RealAddress="1DB22D9E6F8"/>
+          <Color>0080FF</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>690</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>161</ID>
+          <Description>"X no change"</Description>
+          <LastState Value="-0.517918940491415" RealAddress="1DB22D9E658"/>
+          <Color>FF0000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>5f0</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>508</ID>
+          <Description>"Y no change"</Description>
+          <LastState Value="0.160536825370406" RealAddress="1DB22D9E660"/>
+          <Color>FF0000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>5f8</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>507</ID>
+          <Description>"Z no change"</Description>
+          <LastState Value="-0.274703881628385" RealAddress="1DB22D9E668"/>
+          <Color>FF0000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>600</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>506</ID>
+          <Description>"Qy no change 1"</Description>
+          <LastState Value="0.0454422937677431" RealAddress="1DB22D9E640"/>
+          <Color>FF0000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>5d8</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>187</ID>
+          <Description>"Qy no change 2"</Description>
+          <LastState Value="0.0454422937677431" RealAddress="1DB22D9E678"/>
+          <Color>FF0000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>610</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>159</ID>
+          <Description>"Qw no change 1"</Description>
+          <LastState Value="0.998966965388309" RealAddress="1DB22D9E650"/>
+          <Color>FF0000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>5e8</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>195</ID>
+          <Description>"Qw no change 2"</Description>
+          <LastState Value="0.998966965388309" RealAddress="1DB22D9E688"/>
+          <Color>FF0000</Color>
+          <VariableType>Double</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>620</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>538</ID>
+          <Description>"CurHeadPose.Position.oc+x"</Description>
+          <LastState Value="0.002218836686" RealAddress="1DB22D9E788"/>
+          <VariableType>Float</VariableType>
+          <Address>"LibOVRRT64_1.dll"+0030A060</Address>
+          <Offsets>
+            <Offset>720</Offset>
+          </Offsets>
+        </CheatEntry>
+      </CheatEntries>
     </CheatEntry>
     <CheatEntry>
       <ID>535</ID>
-      <Description>"Struct FHeadMountedDisplay"</Description>
-      <LastState Value="0.01293513924" RealAddress="2386AE63500"/>
+      <Description>"FOculusHMD Object"</Description>
+      <LastState Value="2.413754214E-15" RealAddress="1DB22FC3500"/>
       <VariableType>Float</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
       <Offsets>
@@ -31,108 +227,23 @@
       </Offsets>
     </CheatEntry>
     <CheatEntry>
-      <ID>516</ID>
-      <Description>"Map Position"</Description>
-      <LastState Value="" RealAddress="00000000"/>
-      <GroupHeader>1</GroupHeader>
+      <ID>523</ID>
+      <Description>"CamComponent Object"</Description>
+      <LastState Value="1.573059615E-15" RealAddress="1DB3432E4A0"/>
+      <VariableType>Float</VariableType>
+      <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
+      <Offsets>
+        <Offset>0</Offset>
+        <Offset>390</Offset>
+        <Offset>58</Offset>
+        <Offset>278</Offset>
+        <Offset>8</Offset>
+      </Offsets>
       <CheatEntries>
-        <CheatEntry>
-          <ID>365</ID>
-          <Description>"Hero Component base"</Description>
-          <LastState Value="0.008532933891" RealAddress="23879EC60A0"/>
-          <Color>0080FF</Color>
-          <VariableType>Float</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
-          <Offsets>
-            <Offset>0</Offset>
-            <Offset>3E8</Offset>
-            <Offset>400</Offset>
-            <Offset>30</Offset>
-          </Offsets>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>537</ID>
-          <Description>"Hero pos Z (fwd plus)"</Description>
-          <LastState Value="4338.035645" RealAddress="23879EC6240"/>
-          <Color>0080FF</Color>
-          <VariableType>Float</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
-          <Offsets>
-            <Offset>1A0</Offset>
-            <Offset>3E8</Offset>
-            <Offset>400</Offset>
-            <Offset>30</Offset>
-          </Offsets>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>368</ID>
-          <Description>"Hero pos X (right plus)"</Description>
-          <LastState Value="43784.37891" RealAddress="23879EC6244"/>
-          <Color>0080FF</Color>
-          <VariableType>Float</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
-          <Offsets>
-            <Offset>1A4</Offset>
-            <Offset>3E8</Offset>
-            <Offset>400</Offset>
-            <Offset>30</Offset>
-          </Offsets>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>367</ID>
-          <Description>"Hero pos Y (top plus)"</Description>
-          <LastState Value="602.1495361" RealAddress="23879EC6248"/>
-          <Color>0080FF</Color>
-          <VariableType>Float</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
-          <Offsets>
-            <Offset>1A8</Offset>
-            <Offset>3E8</Offset>
-            <Offset>400</Offset>
-            <Offset>30</Offset>
-          </Offsets>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>511</ID>
-          <Description>"HMD map pos Z"</Description>
-          <LastState Value="1523.855469" RealAddress="2386C716790"/>
-          <ShowAsSigned>0</ShowAsSigned>
-          <VariableType>Float</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
-          <Offsets>
-            <Offset>0</Offset>
-            <Offset>C8</Offset>
-            <Offset>0</Offset>
-          </Offsets>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>517</ID>
-          <Description>"HMD map pos X"</Description>
-          <LastState Value="44971.07812" RealAddress="2386C716794"/>
-          <VariableType>Float</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
-          <Offsets>
-            <Offset>4</Offset>
-            <Offset>C8</Offset>
-            <Offset>0</Offset>
-          </Offsets>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>515</ID>
-          <Description>"HMD map pos Y"</Description>
-          <LastState Value="1565.147827" RealAddress="2386C716798"/>
-          <VariableType>Float</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
-          <Offsets>
-            <Offset>8</Offset>
-            <Offset>C8</Offset>
-            <Offset>0</Offset>
-          </Offsets>
-        </CheatEntry>
         <CheatEntry>
           <ID>531</ID>
           <Description>"ComponentToWorld.Trans Z"</Description>
-          <LastState Value="1509.070557" RealAddress="23840CB5440"/>
+          <LastState Value="16.09582329" RealAddress="1DB3432E640"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -146,7 +257,7 @@
         <CheatEntry>
           <ID>526</ID>
           <Description>"ComponentToWorld.Trans X"</Description>
-          <LastState Value="45076.76172" RealAddress="23840CB5444"/>
+          <LastState Value="-19.77811623" RealAddress="1DB3432E644"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -160,7 +271,7 @@
         <CheatEntry>
           <ID>525</ID>
           <Description>"ComponentToWorld.Trans Y"</Description>
-          <LastState Value="1581.781006" RealAddress="23840CB5448"/>
+          <LastState Value="218.6909485" RealAddress="1DB3432E648"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -174,7 +285,7 @@
         <CheatEntry>
           <ID>524</ID>
           <Description>"Relative Z"</Description>
-          <LastState Value="-1149.005981" RealAddress="23840CB5480"/>
+          <LastState Value="1.095824003" RealAddress="1DB3432E680"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -188,7 +299,7 @@
         <CheatEntry>
           <ID>528</ID>
           <Description>"Relative X"</Description>
-          <LastState Value="1794.060547" RealAddress="23840CB5484"/>
+          <LastState Value="0.2218837738" RealAddress="1DB3432E684"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -202,7 +313,7 @@
         <CheatEntry>
           <ID>527</ID>
           <Description>"Relative Y"</Description>
-          <LastState Value="-618.2185059" RealAddress="23840CB5488"/>
+          <LastState Value="-1.309050918" RealAddress="1DB3432E688"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -216,411 +327,103 @@
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
-      <ID>160</ID>
-      <Description>"struct OVR pose"</Description>
-      <LastState Value="9.38724727098368E-323" RealAddress="2386BD2BD00"/>
-      <Color>008000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>4E8</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>539</ID>
-      <Description>"X"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE78"/>
-      <Color>008000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>660</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>158</ID>
-      <Description>"Y"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE80"/>
-      <Color>008000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>668</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>157</ID>
-      <Description>"Z"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE88"/>
-      <Color>008000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>670</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>186</ID>
-      <Description>"Qy"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE60"/>
+      <ID>365</ID>
+      <Description>"Character Component Object"</Description>
       <Color>0080FF</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>648</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>179</ID>
-      <Description>"Qy HMD"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE98"/>
-      <Color>0080FF</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>680</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>194</ID>
-      <Description>"Qw"</Description>
-      <LastState Value="1" RealAddress="2386BD2BE70"/>
-      <Color>0080FF</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>658</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>180</ID>
-      <Description>"Qw HMD"</Description>
-      <LastState Value="1" RealAddress="2386BD2BEA8"/>
-      <Color>0080FF</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>690</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>161</ID>
-      <Description>"X no change"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE08"/>
-      <Color>FF0000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>5f0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>508</ID>
-      <Description>"Y no change"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE10"/>
-      <Color>FF0000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>5f8</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>507</ID>
-      <Description>"Z no change"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE18"/>
-      <Color>FF0000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>600</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>506</ID>
-      <Description>"Qy no change 1"</Description>
-      <LastState Value="0" RealAddress="2386BD2BDF0"/>
-      <Color>FF0000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>5d8</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>187</ID>
-      <Description>"Qy no change 2"</Description>
-      <LastState Value="0" RealAddress="2386BD2BE28"/>
-      <Color>FF0000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>610</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>195</ID>
-      <Description>"Qw no change 2"</Description>
-      <LastState Value="1" RealAddress="2386BD2BE38"/>
-      <Color>FF0000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>620</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>159</ID>
-      <Description>"Qw no change 1"</Description>
-      <LastState Value="1" RealAddress="2386BD2BE00"/>
-      <Color>FF0000</Color>
-      <VariableType>Double</VariableType>
-      <Address>"LibOVRRT64_1.dll"+0030A060</Address>
-      <Offsets>
-        <Offset>5e8</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>231</ID>
-      <Description>"Health"</Description>
-      <LastState Value="150" Activated="1" RealAddress="2383CDDFEB8"/>
       <VariableType>Float</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
       <Offsets>
-        <Offset>178</Offset>
-        <Offset>7C8</Offset>
-        <Offset>390</Offset>
+        <Offset>0</Offset>
+        <Offset>3E8</Offset>
+        <Offset>400</Offset>
         <Offset>30</Offset>
       </Offsets>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>537</ID>
+          <Description>"Character pos Z (fwd plus)"</Description>
+          <Color>0080FF</Color>
+          <VariableType>Float</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
+          <Offsets>
+            <Offset>1A0</Offset>
+            <Offset>3E8</Offset>
+            <Offset>400</Offset>
+            <Offset>30</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>368</ID>
+          <Description>"Character pos X (right plus)"</Description>
+          <Color>0080FF</Color>
+          <VariableType>Float</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
+          <Offsets>
+            <Offset>1A4</Offset>
+            <Offset>3E8</Offset>
+            <Offset>400</Offset>
+            <Offset>30</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>367</ID>
+          <Description>"Character pos Y (top plus)"</Description>
+          <Color>0080FF</Color>
+          <VariableType>Float</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
+          <Offsets>
+            <Offset>1A8</Offset>
+            <Offset>3E8</Offset>
+            <Offset>400</Offset>
+            <Offset>30</Offset>
+          </Offsets>
+        </CheatEntry>
+      </CheatEntries>
     </CheatEntry>
     <CheatEntry>
-      <ID>246</ID>
-      <Description>"SP Timer"</Description>
-      <LastState Value="1054757536" Activated="1" RealAddress="2383CDD19F8"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
-      <Offsets>
-        <Offset>F8</Offset>
-        <Offset>1F0</Offset>
-        <Offset>2C0</Offset>
-        <Offset>390</Offset>
-        <Offset>30</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>250</ID>
-      <Description>"SP Timer Robot"</Description>
-      <VariableType>4 Bytes</VariableType>
-      <Address>2823087D7B8</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>251</ID>
-      <Description>"SP Timer Robot B"</Description>
-      <VariableType>4 Bytes</VariableType>
-      <Address>28283F0C738</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>384</ID>
-      <Description>"blue 6-2"</Description>
-      <LastState Value="100" RealAddress="2384C277740"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE05E0</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>8</Offset>
-        <Offset>120</Offset>
-        <Offset>138</Offset>
-        <Offset>5E0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>385</ID>
-      <Description>"blue 6-2"</Description>
-      <LastState Value="100" RealAddress="2384C277740"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE05E0</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>8</Offset>
-        <Offset>120</Offset>
-        <Offset>140</Offset>
-        <Offset>5E0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>380</ID>
-      <Description>"Blue7"</Description>
-      <LastState Value="100" RealAddress="2384C277740"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+030A9180</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>30</Offset>
-        <Offset>310</Offset>
-        <Offset>F0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>396</ID>
-      <Description>"TeamA2"</Description>
-      <LastState Value="0" RealAddress="2384C276CC0"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE05E0</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>0</Offset>
-        <Offset>120</Offset>
-        <Offset>138</Offset>
-        <Offset>5E0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>397</ID>
-      <Description>"TeamA2"</Description>
-      <LastState Value="0" RealAddress="2384C276CC0"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE05E0</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>0</Offset>
-        <Offset>120</Offset>
-        <Offset>140</Offset>
-        <Offset>5E0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>379</ID>
-      <Description>"TeamB"</Description>
-      <LastState Value="0" RealAddress="2384C276CC0"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+030A9180</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>20</Offset>
-        <Offset>310</Offset>
-        <Offset>F0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>389</ID>
-      <Description>"TeamC"</Description>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE1B00</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>100</Offset>
-        <Offset>310</Offset>
-        <Offset>6D8</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>390</ID>
-      <Description>"TeamC"</Description>
-      <LastState Value="0" RealAddress="238327F8040"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DDD440</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>100</Offset>
-        <Offset>310</Offset>
-        <Offset>78</Offset>
-        <Offset>3E0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>398</ID>
-      <Description>"TeamC"</Description>
-      <LastState Value="0" RealAddress="238327F8040"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+030A9180</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>100</Offset>
-        <Offset>310</Offset>
-        <Offset>78</Offset>
-        <Offset>F0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>395</ID>
-      <Description>"TeamD"</Description>
-      <LastState Value="1474518953" RealAddress="2383C7E5420"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE05E0</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>190</Offset>
-        <Offset>2C0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>399</ID>
-      <Description>"TeamD"</Description>
-      <LastState Value="0" RealAddress="238327FE8C0"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE05E0</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>F0</Offset>
-        <Offset>310</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>400</ID>
-      <Description>"TeamD"</Description>
-      <LastState Value="0" RealAddress="2384C276CC0"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+02DE05E0</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>0</Offset>
-        <Offset>120</Offset>
-        <Offset>138</Offset>
-        <Offset>5E0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>484</ID>
-      <Description>"Team8L"</Description>
-      <LastState Value="0" RealAddress="2384C276CC0"/>
-      <VariableType>4 Bytes</VariableType>
-      <Address>"LandfallClient-Win64-Shipping.exe"+030A9180</Address>
-      <Offsets>
-        <Offset>180</Offset>
-        <Offset>0</Offset>
-        <Offset>120</Offset>
-        <Offset>138</Offset>
-        <Offset>5E0</Offset>
-        <Offset>F0</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>522</ID>
-      <Description>"No description"</Description>
-      <VariableType>Float</VariableType>
-      <Address>230D62CB86C</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>529</ID>
-      <Description>"No description"</Description>
-      <VariableType>Float</VariableType>
-      <Address>230B497E284</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>530</ID>
-      <Description>"No description"</Description>
-      <VariableType>Float</VariableType>
-      <Address>230B497DE8C</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>538</ID>
-      <Description>"# CurHeadPose.Position.oc+x"</Description>
-      <LastState Value="0.4983503222" RealAddress="2383CE33688"/>
-      <VariableType>Float</VariableType>
-      <Address>2386AE635B8</Address>
-      <Offsets>
-        <Offset>208</Offset>
-      </Offsets>
+      <ID>516</ID>
+      <Description>"Map Position"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>511</ID>
+          <Description>"HMD map pos Z"</Description>
+          <LastState Value="16.11064911" RealAddress="1DB488A5B00"/>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
+          <Offsets>
+            <Offset>0</Offset>
+            <Offset>C8</Offset>
+            <Offset>0</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>517</ID>
+          <Description>"HMD map pos X"</Description>
+          <LastState Value="-22.77694511" RealAddress="1DB488A5B04"/>
+          <VariableType>Float</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
+          <Offsets>
+            <Offset>4</Offset>
+            <Offset>C8</Offset>
+            <Offset>0</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>515</ID>
+          <Description>"HMD map pos Y"</Description>
+          <LastState Value="218.7734375" RealAddress="1DB488A5B08"/>
+          <VariableType>Float</VariableType>
+          <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
+          <Offsets>
+            <Offset>8</Offset>
+            <Offset>C8</Offset>
+            <Offset>0</Offset>
+          </Offsets>
+        </CheatEntry>
+      </CheatEntries>
     </CheatEntry>
   </CheatEntries>
   <CheatCodes>
@@ -8541,10 +8344,13 @@
         <Element Offset="92" Vartype="Float" Bytesize="4" RLECount="3" Description="PositionScale3D" DisplayMethod="Unsigned Integer"/>
         <Element Offset="104" Vartype="Float" Bytesize="4" Description="NeckToEyeInMeters.X" DisplayMethod="Unsigned Integer"/>
         <Element Offset="108" Vartype="Float" Bytesize="4" Description="NeckToEyeInMeters.Y" DisplayMethod="Unsigned Integer"/>
-        <Element Offset="112" Vartype="Float" Bytesize="4" Description="BaseOffset.Z" DisplayMethod="Unsigned Integer"/>
-        <Element Offset="116" Vartype="Float" Bytesize="4" Description="BaseOffset.X" DisplayMethod="Unsigned Integer"/>
-        <Element Offset="120" Vartype="Float" Bytesize="4" Description="BaseOffset.Y" DisplayMethod="Unsigned Integer"/>
-        <Element Offset="128" Vartype="Float" Bytesize="4" RLECount="4" Description="BaseOrientation" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="112" Vartype="Float" Bytesize="4" Description="BaseOffset.Z (FW- BK+)" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="116" Vartype="Float" Bytesize="4" Description="BaseOffset.X (L+ R-)" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="120" Vartype="Float" Bytesize="4" Description="BaseOffset.Y (Up- Dn+)" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="128" Vartype="Float" Bytesize="4" Description="BaseOrientation.Z (-CW)" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="132" Vartype="Float" Bytesize="4" Description="BaseOrientation.X (-Dn)" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="136" Vartype="Float" Bytesize="4" Description="BaseOrientation.Y (L+ R-)" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="140" Vartype="Float" Bytesize="4" Description="BaseOrientation.W" DisplayMethod="Unsigned Integer"/>
         <Element Offset="144" Vartype="Float" Bytesize="4" Description="EyeRenderViewport FIntRect 2 dup" DisplayMethod="Unsigned Integer"/>
         <Element Offset="176" Vartype="Float" Bytesize="4" Description="EyeMaxRenderViewport FIntRect 2 dup" DisplayMethod="Unsigned Integer"/>
         <Element Offset="208" Vartype="Float" Bytesize="4" Description="PositionOffset.X" DisplayMethod="Unsigned Integer"/>
@@ -8735,7 +8541,9 @@
     <Structure Name="OVR pose" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
       <Elements>
         <Element Offset="0" Vartype="Pointer" Bytesize="8" DisplayMethod="Unsigned Integer"/>
-        <Element Offset="8" Vartype="4 Bytes" Bytesize="4" RLECount="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="8" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="8" Vartype="Pointer" Bytesize="8" Description="aaa" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="12" Vartype="4 Bytes" Bytesize="4" RLECount="7" DisplayMethod="Unsigned Integer"/>
         <Element Offset="40" Vartype="Pointer" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
         <Element Offset="56" Vartype="4 Bytes" Bytesize="4" RLECount="6" DisplayMethod="Unsigned Integer"/>
         <Element Offset="80" Vartype="Pointer" Bytesize="8" DisplayMethod="Unsigned Integer"/>
@@ -8918,6 +8726,236 @@
         <Element Offset="1972" Vartype="Float" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
         <Element Offset="1984" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
         <Element Offset="1996" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+      </Elements>
+    </Structure>
+    <Structure Name="OVR Pose 2" AutoFill="0" AutoCreate="1" DefaultHex="0" AutoDestroy="0" DoNotSaveLocal="0" RLECompression="1" AutoCreateStructsize="4096">
+      <Elements>
+        <Element Offset="712" Vartype="4 Bytes" Bytesize="4" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="728" Vartype="Double" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="744" Vartype="4 Bytes" Bytesize="4" RLECount="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="776" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="780" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="788" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Hexadecimal"/>
+        <Element Offset="796" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="800" Vartype="Double" Bytesize="8" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="824" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="832" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="840" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Hexadecimal"/>
+        <Element Offset="848" Vartype="Double" Bytesize="8" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="880" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Hexadecimal"/>
+        <Element Offset="888" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="904" Vartype="Double" Bytesize="8" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="944" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="952" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="956" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="960" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="960" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="968" Vartype="Double" Bytesize="8" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="992" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1000" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1000" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1008" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1016" Vartype="Double" Bytesize="8" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1048" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1052" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1056" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1068" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1076" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1080" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1084" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1088" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1092" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1096" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1104" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1116" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1120" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1124" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1132" Vartype="Byte" Bytesize="1" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1133" Vartype="String" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1137" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1141" Vartype="String" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1145" Vartype="Byte" Bytesize="1" RLECount="7" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1152" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1160" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1172" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1176" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1180" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1188" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1192" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1196" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1200" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1204" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1208" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1216" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1228" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1232" Vartype="Pointer" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1248" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1256" Vartype="Pointer" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1264" Vartype="4 Bytes" Bytesize="4" RLECount="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1296" Vartype="Pointer" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1312" Vartype="4 Bytes" Bytesize="4" RLECount="6" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1336" Vartype="Pointer" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1344" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1352" Vartype="Pointer" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1368" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1380" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1384" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1388" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1392" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1396" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1400" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1408" Vartype="4 Bytes" Bytesize="4" RLECount="7" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1436" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1440" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1444" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1448" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1452" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1456" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1464" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1472" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1480" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1492" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1496" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1504" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1508" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1512" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1520" Vartype="Double" Bytesize="8" Description="# X nochange" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1528" Vartype="Double" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1544" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1548" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1552" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1560" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1564" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1568" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1576" Vartype="Double" Bytesize="8" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1600" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1604" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1608" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1616" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1620" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1624" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1632" Vartype="Double" Bytesize="8" Description="### X" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1640" Vartype="Double" Bytesize="8" Description="### Y" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1648" Vartype="Double" Bytesize="8" Description="### Z" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1656" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1664" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1672" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1680" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1688" Vartype="Double" Bytesize="8" Description="# Special X?" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1696" Vartype="Double" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1712" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1716" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1720" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1728" Vartype="Float" Bytesize="4" Description="# InitialTrackingState.CalibratedOrigin.Position.oc+x" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1732" Vartype="Float" Bytesize="4" Description="# InitialTrackingState.CalibratedOrigin.Position.oc+y" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1736" Vartype="Float" Bytesize="4" Description="# InitialTrackingState.CalibratedOrigin.Position.oc+z" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1740" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1744" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1752" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1756" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1760" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1768" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1772" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1776" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1784" Vartype="Double" Bytesize="8" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1808" Vartype="Float" Bytesize="4" Description="CurHeadPose.Orientation.x" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1812" Vartype="Float" Bytesize="4" Description="CurHeadPose.Orientation.y" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1816" Vartype="Float" Bytesize="4" Description="CurHeadPose.Orientation.z" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1820" Vartype="Float" Bytesize="4" Description="CurHeadPose.Orientation.w" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1824" Vartype="Float" Bytesize="4" Description="# CurHeadPose.Position.oc+x" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1828" Vartype="Float" Bytesize="4" Description="# CurHeadPose.Position.oc+y" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1832" Vartype="Float" Bytesize="4" Description="# CurHeadPose.Position.oc-z" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1836" Vartype="Float" Bytesize="4" RLECount="13" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1888" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="1892" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1896" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1900" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1904" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1912" Vartype="Float" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1924" Vartype="4 Bytes" Bytesize="4" RLECount="18" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="1996" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2000" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2004" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2008" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2016" Vartype="Float" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2028" Vartype="4 Bytes" Bytesize="4" RLECount="12" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2076" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2080" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="2084" Vartype="Byte" Bytesize="1" RLECount="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2092" Vartype="Float" Bytesize="4" RLECount="7" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2120" Vartype="Byte" Bytesize="1" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2121" Vartype="String" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2125" Vartype="Byte" Bytesize="1" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2128" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2136" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2144" Vartype="Float" Bytesize="4" RLECount="6" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2168" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="2172" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2176" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2180" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="2184" Vartype="4 Bytes" Bytesize="4" RLECount="13" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2236" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2240" Vartype="4 Bytes" Bytesize="4" RLECount="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2272" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2276" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2284" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2292" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2304" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2308" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2316" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2324" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2332" Vartype="String" Bytesize="5" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2337" Vartype="Byte" Bytesize="1" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2340" Vartype="4 Bytes" Bytesize="4" RLECount="9" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2376" Vartype="Pointer" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2384" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2396" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2404" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2408" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2412" Vartype="4 Bytes" Bytesize="4" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2428" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2436" Vartype="Byte" Bytesize="1" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2440" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2444" Vartype="4 Bytes" Bytesize="4" RLECount="35" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2584" Vartype="Pointer" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2592" Vartype="4 Bytes" Bytesize="4" RLECount="6" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2616" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Hexadecimal"/>
+        <Element Offset="2620" Vartype="4 Bytes" Bytesize="4" RLECount="21" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2704" Vartype="String" Bytesize="14" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2718" Vartype="Byte" Bytesize="1" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2720" Vartype="Pointer" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2736" Vartype="String" Bytesize="10" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2746" Vartype="Byte" Bytesize="1" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2748" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2752" Vartype="Pointer" Bytesize="8" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2768" Vartype="4 Bytes" Bytesize="4" RLECount="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2784" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2792" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2796" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2804" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2812" Vartype="Float" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2824" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2828" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2836" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2840" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2844" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2852" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2860" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2868" Vartype="Float" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2880" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2884" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2892" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2896" Vartype="Float" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2900" Vartype="4 Bytes" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2908" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2916" Vartype="4 Bytes" Bytesize="4" RLECount="6" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2940" Vartype="Double" Bytesize="8" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2948" Vartype="Float" Bytesize="4" RLECount="2" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2956" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2960" Vartype="Float" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2972" Vartype="4 Bytes" Bytesize="4" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2976" Vartype="Float" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
+        <Element Offset="2988" Vartype="4 Bytes" Bytesize="4" RLECount="3" DisplayMethod="Unsigned Integer"/>
       </Elements>
     </Structure>
   </Structures>
@@ -9214,6 +9252,45 @@ function xbcGetState()
 end
 
 
+function timerStart()
+    timer_setEnabled(t1,true)
+    timer_setEnabled(t2,true)
+    timer_setEnabled(t3,true)
+end
+
+function timerStop()
+    timer_setEnabled(t1,false)
+    timer_setEnabled(t2,false)
+    timer_setEnabled(t3,false)
+    --t1.destroy()
+    --t2.destroy()
+    --t3.destroy()
+    print("Stopped")
+end
+function timer1_tick(timer)
+    --debugDisp()
+    if DoneState == true then
+        timer.destroy()
+    end
+end
+function timer2_tick(timer)
+    xbcGetState()
+    if DoneState == true then
+        timer.destroy()
+    end
+end
+function timer3_tick(timer)
+    infoUpdate()
+    if DoneState == true then
+        timer.destroy()
+    end
+end
+
+function FormClose(sender)
+    timerStop()
+    return caHide --Possible options: caHide, caFree, caMinimize, caNone
+end
+
 function debugDisp()
 
     sec=sec+1
@@ -9299,25 +9376,6 @@ function infoUpdate()
     f.e_chaX.text = chaX
     f.e_chaZ.text = chaZ
     f.e_chaY.text = chaY
-    -- calc --
-    f.b_cal1.caption ="Rel/Dt"
-    f.e_cal1a.text = (mapRelX+35.57421875)/dtX
-    f.e_cal1b.text = (mapRelZ-38.003841400146)/dtZ
-    f.e_cal1c.text = (mapRelY+49.963916778564)/dtY
-    f.b_cal2.caption ="Rel/pos"
-    f.e_cal2a.text = mapRelX/posX
-    f.e_cal2b.text = mapRelZ/posZ
-    f.e_cal2c.text = mapRelY/posY
-    f.b_cal3.caption ="Rel-init"
-    f.e_cal3a.text = (mapRelX+35.57421875)
-    f.e_cal3b.text = (mapRelZ-38.003841400146)
-    f.e_cal3c.text = (mapRelY+49.963916778564)
-    -- cal4 --
-    tmpAddr="[\"LibOVRRT64_1.dll\" + 0030A060] +208"
-    f.b_cal4.caption ="CurrHead pose"
-    f.e_cal4a.text = dtX-readFloat(tmpAddr)
---    f.e_cal4b.text = (mapRelZ-38.003841400146)
---    f.e_cal4c.text = (mapRelY+49.963916778564)
 
 -- Orientation -
     f.e_hmdQy.text = readDouble(rotQyAddr)
@@ -9339,45 +9397,57 @@ function infoUpdate()
     end
 
 
+    -- calc --
+    f.b_cal1.caption ="Rel/Dt"
+    f.e_cal1a.text = (mapRelX+35.57421875)/dtX
+    f.e_cal1b.text = (mapRelZ-38.003841400146)/dtZ
+    f.e_cal1c.text = (mapRelY+49.963916778564)/dtY
+    f.b_cal2.caption ="Rel/pos"
+    f.e_cal2a.text = mapRelX/posX
+    f.e_cal2b.text = mapRelZ/posZ
+    f.e_cal2c.text = mapRelY/posY
+    f.b_cal3.caption ="Rel-init"
+    f.e_cal3a.text = (mapRelX+35.57421875)
+    f.e_cal3b.text = (mapRelZ-38.003841400146)
+    f.e_cal3c.text = (mapRelY+49.963916778564)
+
+    -- cal4 --
+    camtoWorldX = readFloat(camtoWorldXaddr)
+    camtoWorldZ = readFloat(camtoWorldZaddr)
+    camtoWorldY = readFloat(camtoWorldYaddr)
+    f.b_cal4.caption ="cWorld"
+    f.e_cal4a.text = readFloat(camtoWorldXaddr)
+    f.e_cal4b.text = readFloat(camtoWorldZaddr)
+    f.e_cal4c.text = readFloat(camtoWorldYaddr)
+    f.b_cal5.caption ="pos*w"
+    f.e_cal5a.text = posX*worldScale
+    f.e_cal5b.text = posZ*worldScale
+    f.e_cal5c.text = posY*worldScale
+    f.b_cal6.caption ="origin"
+    f.e_cal6a.text = camtoWorldX-posX*worldScale
+    f.e_cal6b.text = camtoWorldZ-posZ*worldScale
+    f.e_cal6c.text = readFloat(baseZAddr)
+
 end
-function timerStart()
-    timer_setEnabled(t1,true)
-    timer_setEnabled(t2,true)
-    timer_setEnabled(t3,true)
+-- Follow mode: Compare camera Relative to match character's Relative
+-- newRelative = new Delta OvrPos *worldScale + origin Fix
+-- origin fix = relative -(deltaOvrPos*worldScale)
+function relOriginFix(currDtOvrPos, currRelative)
+    return currRelative-(currDtOvrPos*worldScale)
+end
+function getRelative (currOvrPos, newOvrPos, currRelative)
+    --newMapPos = newDtOvrPos*worldScale+relOriginFix(currRelative, currDtOvrPos)
+    --newMapPos = newDtOvrPos*worldScale+currRelative-(currDtOvrPos*worldScale)
+    --newMapPos = (newDtOvrPos-currDtOvrPos)*worldScale+currRelative
+    newRelative = (newOvrPos-currOvrPos)*worldScale+currRelative
+    return newMapPos
+end
+function getOvrPos(currOvrPos, currRelative, newRelative)
+    local newOvrPos = currOvrPos+(newRelative-currRelative)/worldScale
+    return newOvrPos
 end
 
-function timerStop()
-    timer_setEnabled(t1,false)
-    timer_setEnabled(t2,false)
-    timer_setEnabled(t3,false)
-    --t1.destroy()
-    --t2.destroy()
-    --t3.destroy()
-    print("Stopped")
-end
-function timer1_tick(timer)
-    --debugDisp()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
-function timer2_tick(timer)
-    xbcGetState()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
-function timer3_tick(timer)
-    infoUpdate()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
 
-function FormClose(sender)
-    timerStop()
-    return caHide --Possible options: caHide, caFree, caMinimize, caNone
-end
 math.deg2Rad = math.pi / 180
 math.rad2Deg = 180 / math.pi
 
@@ -9410,7 +9480,7 @@ anaMoveFactors = {0.05, 0.15, 5}
 anaRotateFactors = {2, 3, 5}
 anaDeadZone = 3000
 vibDuration = 0.2 --secs
-
+worldScale = 3600
 ---
 xbc = nil
 sec = 0
@@ -9427,7 +9497,8 @@ nl="\r\n"
 print("Press F3 to Start, F4 to stop")
 -- Y=up, Z=front
 -- Angle: forward=0, clockwise
---Memory Address
+-- Memory Address --
+-- LibOVR
 posXAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +660"
 posYAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +668"
 posZAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +670"
@@ -9440,14 +9511,28 @@ posYRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5f8"
 posZRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +600"
 rotQyRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5d8" -- Forward direction (only affected by reset view)
 rotQwRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +620"
+currHeadposXAdrr="[\"LibOVRRT64_1.dll\" + 0030A060] +720"
+
 -- Map postion
 mapPosZAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +0"
 mapPosXAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +4"
 mapPosYAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +8"
+
+camtoWorldZaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A0"
+camtoWorldXaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A4"
+camtoWorldYaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A8"
 mapRelZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E0"
 mapRelXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E4"
 mapRelYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E8"
--- Character
+-- CameraComponent Object
+-- FOculusHMD Object
+FOculusHMDObjBase= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +0"
+FOculusHMDObjSettingsBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+0"
+-- BaseOffset.Z (FW- BK+) / BaseOffset.X (L+ R-) / BaseOffset.Y (Up- Dn+)
+-- BaseOrientation.Z (-CW) / BaseOrientation.X (-Dn) / BaseOrientation.Y (L+ R-) / BaseOrientation
+-- All floats
+baseZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+70"
+-- Character CameraComponent Object
 chaZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A0"
 chaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A4"
 chaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
@@ -9455,6 +9540,9 @@ chaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1
 --print(readFloat(0x1eca16d3084))
 --print(readFloat(0x1eca16d3094))
 
+f=UDF1
+f.show()
+infoUpdate()
 
 --t1=createTimer(getMainForm(), true) --message output
 --t2=createTimer(getMainForm(), true) -- fast timer
@@ -9465,22 +9553,11 @@ timer_setInterval(t1, 1000)
 timer_onTimer(t1, timer1_tick)
 timer_setInterval(t2, t2_interval)
 timer_onTimer(t2, timer2_tick)
-timer_setInterval(t3, 500)
+timer_setInterval(t3, 1000)
 timer_onTimer(t3, timer3_tick)
 createHotkey(pressStart, VK_SCROLL)
 createHotkey(pressStop, VK_PAUSE)
 print("------")
-
-f=UDF1
-f.show()
---f.CEEdit1.text = tree.items[0].text
---f.CEEdit2.text = tree.items[3].text
---dhmd=f.CEPanel1.CEGroupBx1
-d={}
-d.hmd={}
-d.hmd.x=f.CEEdit1
-d.hmd.x="1111"
-infoUpdate()
 
 
 

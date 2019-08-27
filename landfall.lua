@@ -291,6 +291,45 @@ function xbcGetState()
 end
 
 
+function timerStart()
+    timer_setEnabled(t1,true)
+    timer_setEnabled(t2,true)
+    timer_setEnabled(t3,true)
+end
+
+function timerStop()
+    timer_setEnabled(t1,false)
+    timer_setEnabled(t2,false)
+    timer_setEnabled(t3,false)
+    --t1.destroy()
+    --t2.destroy()
+    --t3.destroy()
+    print("Stopped")
+end
+function timer1_tick(timer) 
+    --debugDisp()
+    if DoneState == true then
+        timer.destroy()
+    end
+end
+function timer2_tick(timer) 
+    xbcGetState()
+    if DoneState == true then
+        timer.destroy()
+    end
+end
+function timer3_tick(timer) 
+    infoUpdate()
+    if DoneState == true then
+        timer.destroy()
+    end
+end
+
+function FormClose(sender)
+    timerStop()
+    return caHide --Possible options: caHide, caFree, caMinimize, caNone
+end
+
 function debugDisp()
 
     sec=sec+1
@@ -376,20 +415,7 @@ function infoUpdate()
     f.e_chaX.text = chaX
     f.e_chaZ.text = chaZ
     f.e_chaY.text = chaY
-    -- calc --
-    f.b_cal1.caption ="Rel/Dt"
-    f.e_cal1a.text = (mapRelX+35.57421875)/dtX
-    f.e_cal1b.text = (mapRelZ-38.003841400146)/dtZ
-    f.e_cal1c.text = (mapRelY+49.963916778564)/dtY
-    f.b_cal3.caption ="Rel-init"
-    f.e_cal13a.text = (mapRelX+35.57421875)/dtX
-    f.e_cal13b.text = (mapRelZ-38.003841400146)/dtZ
-    f.e_cal13c.text = (mapRelY+49.963916778564)/dtY
-    f.b_cal2.caption ="Rel/pos"
-    f.e_cal2a.text = mapRelX/posX
-    f.e_cal2b.text = mapRelZ/posZ
-    f.e_cal2c.text = mapRelY/posY
-    
+
 -- Orientation -
     f.e_hmdQy.text = readDouble(rotQyAddr)
     f.e_hmdQw.text = readDouble(rotQwAddr)
@@ -409,46 +435,58 @@ function infoUpdate()
         f.e_t2.text = mapRelX/chaX
     end
 
-    
+
+    -- calc --
+    f.b_cal1.caption ="Rel/Dt"
+    f.e_cal1a.text = (mapRelX+35.57421875)/dtX
+    f.e_cal1b.text = (mapRelZ-38.003841400146)/dtZ
+    f.e_cal1c.text = (mapRelY+49.963916778564)/dtY
+    f.b_cal2.caption ="Rel/pos"
+    f.e_cal2a.text = mapRelX/posX
+    f.e_cal2b.text = mapRelZ/posZ
+    f.e_cal2c.text = mapRelY/posY
+    f.b_cal3.caption ="Rel-init"
+    f.e_cal3a.text = (mapRelX+35.57421875)
+    f.e_cal3b.text = (mapRelZ-38.003841400146)
+    f.e_cal3c.text = (mapRelY+49.963916778564)
+
+    -- cal4 --
+    camtoWorldX = readFloat(camtoWorldXaddr)
+    camtoWorldZ = readFloat(camtoWorldZaddr)
+    camtoWorldY = readFloat(camtoWorldYaddr)
+    f.b_cal4.caption ="cWorld"
+    f.e_cal4a.text = readFloat(camtoWorldXaddr)
+    f.e_cal4b.text = readFloat(camtoWorldZaddr)
+    f.e_cal4c.text = readFloat(camtoWorldYaddr)
+    f.b_cal5.caption ="pos*w"
+    f.e_cal5a.text = posX*worldScale
+    f.e_cal5b.text = posZ*worldScale
+    f.e_cal5c.text = posY*worldScale
+    f.b_cal6.caption ="origin"
+    f.e_cal6a.text = camtoWorldX-posX*worldScale
+    f.e_cal6b.text = camtoWorldZ-posZ*worldScale
+    f.e_cal6c.text = readFloat(baseZAddr)
+        
 end
-function timerStart()
-    timer_setEnabled(t1,true)
-    timer_setEnabled(t2,true)
-    timer_setEnabled(t3,true)
+-- Follow mode: Compare camera Relative to match character's Relative
+-- newRelative = new Delta OvrPos *worldScale + origin Fix
+-- origin fix = relative -(deltaOvrPos*worldScale)
+function relOriginFix(currDtOvrPos, currRelative)
+    return currRelative-(currDtOvrPos*worldScale)
+end
+function getRelative (currOvrPos, newOvrPos, currRelative)
+    --newMapPos = newDtOvrPos*worldScale+relOriginFix(currRelative, currDtOvrPos)
+    --newMapPos = newDtOvrPos*worldScale+currRelative-(currDtOvrPos*worldScale)
+    --newMapPos = (newDtOvrPos-currDtOvrPos)*worldScale+currRelative
+    newRelative = (newOvrPos-currOvrPos)*worldScale+currRelative
+    return newMapPos
+end
+function getOvrPos(currOvrPos, currRelative, newRelative)
+    local newOvrPos = currOvrPos+(newRelative-currRelative)/worldScale
+    return newOvrPos 
 end
 
-function timerStop()
-    timer_setEnabled(t1,false)
-    timer_setEnabled(t2,false)
-    timer_setEnabled(t3,false)
-    --t1.destroy()
-    --t2.destroy()
-    --t3.destroy()
-    print("Stopped")
-end
-function timer1_tick(timer) 
-    --debugDisp()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
-function timer2_tick(timer) 
-    xbcGetState()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
-function timer3_tick(timer) 
-    infoUpdate()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
 
-function FormClose(sender)
-    timerStop()
-    return caHide --Possible options: caHide, caFree, caMinimize, caNone
-end
 math.deg2Rad = math.pi / 180
 math.rad2Deg = 180 / math.pi
 
@@ -481,7 +519,7 @@ anaMoveFactors = {0.05, 0.15, 5}
 anaRotateFactors = {2, 3, 5}
 anaDeadZone = 3000
 vibDuration = 0.2 --secs
-
+worldScale = 3600
 ---
 xbc = nil
 sec = 0
@@ -498,7 +536,8 @@ nl="\r\n"
 print("Press F3 to Start, F4 to stop")
 -- Y=up, Z=front
 -- Angle: forward=0, clockwise
---Memory Address
+-- Memory Address --
+-- LibOVR
 posXAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +660"
 posYAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +668"
 posZAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +670"
@@ -511,14 +550,35 @@ posYRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5f8"
 posZRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +600"
 rotQyRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5d8" -- Forward direction (only affected by reset view)
 rotQwRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +620"
+currHeadposXAdrr="[\"LibOVRRT64_1.dll\" + 0030A060] +720"
+
 -- Map postion
 mapPosZAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +0"
 mapPosXAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +4"
 mapPosYAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +8"
+
+camtoWorldZaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A0"
+camtoWorldXaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A4"
+camtoWorldYaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A8"
 mapRelZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E0"
 mapRelXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E4"
 mapRelYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E8"
--- Character
+-- CameraComponent Object
+-- FOculusHMD Object
+FOculusHMDObjBase= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +0"
+FOculusHMDObjSettingsBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+0"
+-- BaseOffset.Z (FW- BK+) / BaseOffset.X (L+ R-) / BaseOffset.Y (Up- Dn+)
+-- BaseOrientation.Z (-CW) / BaseOrientation.X (-Dn) / BaseOrientation.Y (L+ R-) / BaseOrientation
+-- All floats
+basePosZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+70"
+basePosXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+74"
+basePosYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+78"
+baseRotZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+80"
+baseRotXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+84"
+baseRotYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+88"
+baseRotWAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+8C"
+
+-- Character CameraComponent Object
 chaZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A0"
 chaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A4"
 chaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
@@ -526,6 +586,9 @@ chaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1
 --print(readFloat(0x1eca16d3084))
 --print(readFloat(0x1eca16d3094))
 
+f=UDF1
+f.show()
+infoUpdate()
 
 --t1=createTimer(getMainForm(), true) --message output
 --t2=createTimer(getMainForm(), true) -- fast timer
@@ -536,22 +599,11 @@ timer_setInterval(t1, 1000)
 timer_onTimer(t1, timer1_tick)
 timer_setInterval(t2, t2_interval)
 timer_onTimer(t2, timer2_tick)
-timer_setInterval(t3, 500)
+timer_setInterval(t3, 1000)
 timer_onTimer(t3, timer3_tick)
 createHotkey(pressStart, VK_SCROLL)
 createHotkey(pressStop, VK_PAUSE)
 print("------")
-
-f=UDF1
-f.show()
---f.CEEdit1.text = tree.items[0].text
---f.CEEdit2.text = tree.items[3].text
---dhmd=f.CEPanel1.CEGroupBx1
-d={}
-d.hmd={}
-d.hmd.x=f.CEEdit1
-d.hmd.x="1111"
-infoUpdate()
 
 
 
