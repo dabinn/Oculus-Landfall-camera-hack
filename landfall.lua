@@ -31,7 +31,47 @@ function anaPercent(anaVal)
     return anaPercentVal
 end
 
+followCamOffsetDef = 500
+followCamAngleDef  = 0
+followCamOffset=followCamOffsetDef
+followCamAngle =followCamAngleDef
+function followCharacter()
+    local mapCamZ=readFloat(mapCamZAddr)
+    local mapCamX=readFloat(mapCamXAddr)
+    local mapCamY=readFloat(mapCamYAddr)
+    local mapChaZ=readFloat(mapChaZAddr)
+    local mapChaX=readFloat(mapChaXAddr)
+    local mapChaY=readFloat(mapChaYAddr)
+    local newMapOffX=mapChaX-mapCamX+100
+    local newMapOffZ=mapChaZ-mapCamZ-followCamOffset
+    writeFloat(mapOffXAddr, newMapOffX)
+    writeFloat(mapOffZAddr, newMapOffZ)
+end
 
+-- New method using Settings
+-- XZY Movement: Left/Right, Forward/Back, Up/Down
+-- Y Rotate
+function anaAdvMoveRotate(anaValX, anaValZ, anaValY, anaValRY)
+    local anaPercentX=anaPercent(anaValX)
+    local anaPercentZ=anaPercent(anaValZ)
+    local anaPercentY=anaPercent(anaValY)
+    local anaPercentRY=anaPercent(anaValRY)
+    
+    followCharacter()
+    
+    local abs=math.abs
+    -- any axis movement
+    if (abs(anaPercentX)+abs(anaPercentY)+abs(anaPercentZ)+abs(anaPercentRY) == 0) then
+        return
+    end
+    
+    eular=getBaseEular()
+    --anaAdvMovePlane(anaPercentX*anaMoveFactor, anaPercentZ*anaMoveFactor)
+    anaMoveElev(anaPercentY*anaMoveFactor)
+    anaAdvRotate(anaPercentRY*anaRotateFactor)
+end
+
+-- Old method using LibOVR
 -- XZY Movement: Left/Right, Forward/Back, Up/Down
 -- Y Rotate
 function anaMoveRotate(anaValX, anaValZ, anaValY, anaValRY)
@@ -58,6 +98,34 @@ function anaMoveElev(move)
     writeDouble(posYAddr, readDouble(posYAddr)+move)
 end
 
+-- New method using Settings
+function anaAdvMovePlane(moveX, moveZ)
+    -- Word X: rigt=+, back=-
+    -- Word Z: forwad=-, back=+
+    if (moveX == 0) and (moveZ == 0) then return end
+
+    local moveDist = math.sqrt(moveX^2+moveZ^2)
+    local moveAngle = math.deg(math.atan(-moveX/moveZ))
+    if (moveZ <  0) then
+        moveAngle = moveAngle + 180
+    end
+    -- Would XYZ always changed by reseting the view
+    -- So the initial eular.y should by ignore, 
+    -- It needs to remeber the value or count the total rotation after the view is reseted.
+    -- Monitor other mem addr which affected by reset may help, but still has some issue.
+    -- The best way should be move along the realtime HMD direction.
+    
+    -- No need to add original eular.y
+    local targetAngle = (eular.y + moveAngle)%360
+    local dX = -moveDist * math.sin(math.rad(targetAngle))
+    local dZ = -moveDist * math.cos(math.rad(targetAngle))
+    local targetX = readFloat(mapOffXAddr) + dX *worldScale
+    local targetZ = readFloat(mapOffZAddr) - dZ *worldScale
+    writeFloat(mapOffXAddr, targetX)
+    writeFloat(mapOffZAddr, targetZ)
+end
+
+-- Old method using LibOVR
 function anaMovePlane(moveX, moveZ)
     -- Word X: rigt=+, back=-
     -- Word Z: forwad=-, back=+
@@ -88,6 +156,25 @@ function anaMovePlane(moveX, moveZ)
     writeDouble(posZAddr, targetZ)
 end
 
+-- New method using Settings
+-- Y Rotate
+function anaAdvRotate(rotAngle)
+
+    if (rotAngle == 0) then return end
+    local ez = eular.z
+    local ey = (eular.y-rotAngle) % 360
+    local ex = eular.x
+    local q=eulerToQuat(newE(ez,ey,ex))
+
+    writeFloat(baseRotZAddr, q.z)
+    writeFloat(baseRotYAddr, q.y)
+    writeFloat(baseRotXAddr, q.x)
+    writeFloat(baseRotWAddr, q.w)
+        
+    
+end
+
+-- Old method using LibOVR
 -- Y Rotate
 function anaRotate(rotAngle)
     -- Rest Vew: In Game=Oculus Rest View, Changes World XYZ. Front = 0 degree angle
@@ -203,7 +290,16 @@ function xbcButtonUp(btn)
         print("> "..btn.." UP")
 end
 
+
 -- Calculate Orientation Angle --
+-- New method using Settings
+function getBaseEular() -- Orientation of current forward
+    local eular=quatToEular(newQ(readFloat(baseRotZAddr) ,readFloat(baseRotYAddr), readFloat(baseRotXAddr), readFloat(baseRotWAddr)))
+    return eular
+end
+
+-- Calculate Orientation Angle --
+-- Old method using LibBVR
 function getEular() -- Orientation of current forward
     local eular=quatToEular(newQ(0,readDouble(rotQyAddr),0,readDouble(rotQwAddr)))
     --eular=quatToEular(newQ(0,readDouble(rotQyHMDAddr),0,readDouble(rotQwHMDAddr)))
@@ -281,20 +377,32 @@ function xbcGetState()
     -- parameters analog axis for: Move X, Move Z, Move Y, Roate Y (Y is up/down)
     -- XZY Movement: Left/Right, Forward/Back, Up/Down
     -- Rotate: Left/Right
+    -- Original method: Use libOvr calibration data
+    -- New method: Use BaseOffest/Orientation in Settings
     if (controlStyle == 1) then --CS style
-        anaMoveRotate(xbc.ThumbLeftX, xbc.ThumbLeftY, xbc.ThumbRightY, xbc.ThumbRightX)
+        --anaMoveRotate(xbc.ThumbLeftX, xbc.ThumbLeftY, xbc.ThumbRightY, xbc.ThumbRightX)
+        anaAdvMoveRotate(xbc.ThumbLeftX, xbc.ThumbLeftY, xbc.ThumbRightY, xbc.ThumbRightX)
     elseif (controlStyle == 2) then --Racing style
-        anaMoveRotate(xbc.ThumbRightX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbLeftX)
+        --anaMoveRotate(xbc.ThumbRightX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbLeftX)
+        anaAdvMoveRotate(xbc.ThumbRightX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbLeftX)
     else -- Space Fighter Style
-        anaMoveRotate(xbc.ThumbLeftX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbRightX)
+        --anaMoveRotate(xbc.ThumbLeftX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbRightX)
+        anaAdvMoveRotate(xbc.ThumbLeftX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbRightX)
     end
 end
 
+function pressStart()
+    timerStart()
+end
+function pressStop()
+    timerStop()
+end
 
 function timerStart()
     timer_setEnabled(t1,true)
     timer_setEnabled(t2,true)
     timer_setEnabled(t3,true)
+    print("Started")
 end
 
 function timerStop()
@@ -393,9 +501,9 @@ function infoUpdate()
     local dtY = (posY-posYrst)
     local dtZ = (posZ-posZrst)
     --
-    local chaX = readFloat(chaXAddr)
-    local chaY = readFloat(chaYAddr)
-    local chaZ = readFloat(chaZAddr)
+    local mapChaX = readFloat(mapChaXAddr)
+    local mapChaY = readFloat(mapChaYAddr)
+    local mapChaZ = readFloat(mapChaZAddr)
     
     f.e_hmdX.text = posX
     f.e_hmdZ.text = posZ
@@ -412,9 +520,12 @@ function infoUpdate()
     f.e_relX.text = mapRelX
     f.e_relZ.text = mapRelZ
     f.e_relY.text = mapRelY
-    f.e_chaX.text = chaX
-    f.e_chaZ.text = chaZ
-    f.e_chaY.text = chaY
+    f.e_chaX.text = mapChaX
+    f.e_chaZ.text = mapChaZ
+    f.e_chaY.text = mapChaY
+    mapCamX = readFloat(mapCamXAddr)
+    mapCamZ = readFloat(mapCamZAddr)
+    mapCamY = readFloat(mapCamYAddr)
 
 -- Orientation -
     f.e_hmdQy.text = readDouble(rotQyAddr)
@@ -431,8 +542,8 @@ function infoUpdate()
     --msg = msg..nl.."Angle X:"..e.x.." ,Y:"..e.y.." ,Z:"..e.z.." ,Fac Sel:"..anaFactorSel..", Move:"..anaMoveFactor..", Rotate:"..anaRotateFactor
 
     f.e_t1.text = readFloat(mapRelXAddr)
-    if (chaX ~= nil) and (chaX ~= 0) then
-        f.e_t2.text = mapRelX/chaX
+    if (mapChaX ~= nil) and (mapChaX ~= 0) then
+        f.e_t2.text = mapRelX/mapChaX
     end
 
 
@@ -445,26 +556,28 @@ function infoUpdate()
     f.e_cal2a.text = mapRelX/posX
     f.e_cal2b.text = mapRelZ/posZ
     f.e_cal2c.text = mapRelY/posY
-    f.b_cal3.caption ="Rel-init"
-    f.e_cal3a.text = (mapRelX+35.57421875)
-    f.e_cal3b.text = (mapRelZ-38.003841400146)
-    f.e_cal3c.text = (mapRelY+49.963916778564)
+    -- cal 3 --
+    f.b_cal3.caption ="Adv"
+    --f.e_cal3a.text = (mapRelX+35.57421875)
+    --f.e_cal3b.text = (mapRelZ-38.003841400146)
+    --f.e_cal3c.text = (mapRelY+49.963916778564)
 
-    -- cal4 --
-    camtoWorldX = readFloat(camtoWorldXaddr)
-    camtoWorldZ = readFloat(camtoWorldZaddr)
-    camtoWorldY = readFloat(camtoWorldYaddr)
-    f.b_cal4.caption ="cWorld"
-    f.e_cal4a.text = readFloat(camtoWorldXaddr)
-    f.e_cal4b.text = readFloat(camtoWorldZaddr)
-    f.e_cal4c.text = readFloat(camtoWorldYaddr)
-    f.b_cal5.caption ="pos*w"
-    f.e_cal5a.text = posX*worldScale
-    f.e_cal5b.text = posZ*worldScale
-    f.e_cal5c.text = posY*worldScale
+    -- cal 4 --
+    f.b_cal4.caption ="pos off "
+    f.e_cal4a.text = readFloat(mapOffXAddr)
+    f.e_cal4b.text = readFloat(mapOffZAddr)
+    f.e_cal4c.text = ""
+
+    -- cal 5 --
+    f.b_cal5.caption ="cha DIst"
+    f.e_cal5a.text = mapCamX - mapChaX
+    f.e_cal5b.text = mapCamZ - mapChaZ
+    f.e_cal5c.text = mapCamY - mapChaY
+
+    -- cal 6 --
     f.b_cal6.caption ="origin"
-    f.e_cal6a.text = camtoWorldX-posX*worldScale
-    f.e_cal6b.text = camtoWorldZ-posZ*worldScale
+    f.e_cal6a.text = mapCamX-posX*worldScale
+    f.e_cal6b.text = mapCamZ-posZ*worldScale
     f.e_cal6c.text = readFloat(baseZAddr)
         
 end
@@ -552,24 +665,45 @@ rotQyRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5d8" -- Forward direction (on
 rotQwRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +620"
 currHeadposXAdrr="[\"LibOVRRT64_1.dll\" + 0030A060] +720"
 
--- Map postion
+-- Map postion --
+-- the old one, not sure belongs which object
 mapPosZAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +0"
 mapPosXAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +4"
 mapPosYAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +8"
-
-camtoWorldZaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A0"
-camtoWorldXaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A4"
-camtoWorldYaddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A8"
+-- Read from CameraComponent Object
+mapCamZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A0"
+mapCamXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A4"
+mapCamYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A8"
 mapRelZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E0"
 mapRelXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E4"
 mapRelYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E8"
--- CameraComponent Object
+-- Read from Character CameraComponent Object
+mapChaZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A0"
+mapChaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A4"
+mapChaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
+
+
+
 -- FOculusHMD Object
 FOculusHMDObjBase= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +0"
 FOculusHMDObjSettingsBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+0"
+-- All floats
+-- PositionOffset: Offset distance to HMD Origin,
+--                 The coodinate system is alway the same with Map, not effected by rotation.
+--                 The scale is also the same with the Map. (but counting from HMD Origin.)
+--                 This changes the HMD position, and also the rotation center of the 'BaseOrientation'
+--                 This doesnot effect the 'ComponentToWorld.Trans' / 'Relative' in CamComponent Object
+--                 Only 2 axis X & Z are provided, no Y axis.
+-- BaseOffset: This also moves the HMD position, and the coodinate system follows 'BaseOrientation'
+--             But too bad this does not move the rotation center together.
+-- BaseOrientation: This Rotaion feels much better than the quaternion in libOVR, true rotaion around center point.
+--                  And this also provides 3 axis rotation.
+-- LibOVR Orientation: The rotation center always follows HMD, not effectd by PositionOffset or BaseOffset
+--                     But the rotaion feels strange, 
+--                     and it is affected by the distance of HMD and the Oculus initial calibration origin.
+-- Direction
 -- BaseOffset.Z (FW- BK+) / BaseOffset.X (L+ R-) / BaseOffset.Y (Up- Dn+)
 -- BaseOrientation.Z (-CW) / BaseOrientation.X (-Dn) / BaseOrientation.Y (L+ R-) / BaseOrientation
--- All floats
 basePosZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+70"
 basePosXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+74"
 basePosYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+78"
@@ -577,11 +711,9 @@ baseRotZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+80
 baseRotXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+84"
 baseRotYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+88"
 baseRotWAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+8C"
+mapOffZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D0"
+mapOffXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D4"
 
--- Character CameraComponent Object
-chaZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A0"
-chaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A4"
-chaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
 
 --print(readFloat(0x1eca16d3084))
 --print(readFloat(0x1eca16d3094))
