@@ -13,7 +13,7 @@ end
 
 
 function anaPercent(anaVal)
-    if (xbc==nil or not btEnabled or math.abs(anaVal) < anaDeadZone) then
+    if (xbc==nil or not camControlEnabled or math.abs(anaVal) < anaDeadZone) then
         return 0
     end
     -- anaVal=-32767~0~+32767
@@ -279,16 +279,6 @@ function eulerToQuat(e)
 end
 
 
-function xbcButtonDown(btn)
-    if (not xbcButtonStat[btn]) then
-        print("> "..btn.." DOWN")
-        xbcButtonStat[btn]=true
-    end
-end
-function xbcButtonUp(btn)
-    xbcButtonStat[btn]=false
-        print("> "..btn.." UP")
-end
 
 
 -- Calculate Orientation Angle --
@@ -314,64 +304,99 @@ function getEularRst() -- Orientation of the reset view
     return eular
 end
 
--- timer function --
+
+function on_GAMEPAD_LEFT_SHOULDER_released(btn)
+            -- Decrease speed
+            anaFactorSel = anaFactorSel - 1
+            if (anaFactorSel < 1) then
+                anaFactorSel = 1
+            end
+            anaMoveFactor = anaMoveFactors[anaFactorSel]
+            anaRotateFactor = anaRotateFactors[anaFactorSel]
+end
+
+function on_GAMEPAD_RIGHT_SHOULDER_released(btn)
+            -- Increase speed
+            anaFactorSel = anaFactorSel + 1
+            if (anaFactorSel > #anaMoveFactors) then
+                anaFactorSel = #anaMoveFactors
+            end
+            anaMoveFactor = anaMoveFactors[anaFactorSel]
+            anaRotateFactor = anaRotateFactors[anaFactorSel]
+end
+
+function on_GAMEPAD_DPAD_UP_released(btn)
+    camControlMode = CAM_CTRL_MODE_FOLLOW
+end
+function on_GAMEPAD_DPAD_DOWN_released(btn)
+    camControlMode = CAM_CTRL_MODE_FREE
+end
+function on_GAMEPAD_DPAD_LEFT_released(btn)
+end
+function on_GAMEPAD_DPAD_RIGHT_released(btn)
+end
+function on_GAMEPAD_BACK_released(btn)
+end
+function on_GAMEPAD_LEFT_THUMB_released(btn)
+end
+function on_GAMEPAD_RIGHT_THUMB_released(btn)
+    -- Enable camera control --
+    camControlEnabled= not camControlEnabled
+    --Vibration when enabled
+    if (camControlEnabled) then
+       vibStart=os.clock()
+       setXBox360ControllerVibration(xbc.ControllerID, 35535, 0)
+    end
+end
+
+function xbcCheckButtons()
+    local idx, btn
+    -- check button status
+    for btn, pressed in pairs(xbc) do
+        -- Only checks buttons, skip analog stick and other info
+        if (string.sub(btn, 0,8)=="GAMEPAD_") and (pressed) then
+            -- button pressed
+            -- Register a botton state
+            if (not xbcButtonStat[btn]) then
+                print("> "..btn.." DOWN")
+                xbcButtonStat[btn]=true
+            else
+                --button hold
+            end
+        else
+            -- BTN released, do something
+            if (xbcButtonStat[btn]) then
+                -- UnRegister a botton state
+                xbcButtonStat[btn]=false
+                print("> "..btn.." UP")
+
+                -- Call button function if exist
+                local btnFuncName= "on_"..btn.."_released"
+                if (_G[btnFuncName] ~= nil) then
+                    _G[btnFuncName](btn)
+                end
+            end
+        end
+    end
+end 
+
+
+-- Timer update xbox controller status --
 function xbcGetState()
-    local btn
-    
     -- Read Xbox Controller state
     xbc = getXBox360ControllerState();
     if (xbc==nil) then
        return
     end
 
-        -- stop vibration --
+    -- stop vibration --
     if (vibStart>0) and (os.clock()-vibStart > vibDuration) then
         vibStart=0
         setXBox360ControllerVibration(xbc.ControllerID, 0, 0)
     end
 
-    btn="GAMEPAD_LEFT_SHOULDER"
-    if (xbc[btn]) then
-         xbcButtonDown(btn)
-    else
-        -- BTN released, do something
-        if (xbcButtonStat[btn]) then
-            xbcButtonUp(btn)
-            btEnabled= not btEnabled
-            --Vibration when enabled
-            if (btEnabled) then
-               vibStart=os.clock()
-               setXBox360ControllerVibration(xbc.ControllerID, 35535, 0)
-            end
-        end
-    end
+    xbcCheckButtons()
 
-    btn="GAMEPAD_RIGHT_SHOULDER"
-    if (xbc[btn]) then
-        xbcButtonDown(btn)
-    else
-        -- BTN released, do something
-        if (xbcButtonStat[btn]) then
-            xbcButtonUp(btn)
-            -- Change speed factors
-            if (anaFactorSel==1) then
-                anaFactorSelFwd=1
-            elseif  (anaFactorSel==#anaMoveFactors) then
-                anaFactorSelFwd=-1
-            end
-            -- bi-direction
-            --anaFactorSel = anaFactorSel + anaFactorSelFwd
-            -- single direction
-            anaFactorSel = (anaFactorSel % #anaMoveFactors)+1
-            anaMoveFactor = anaMoveFactors[anaFactorSel]
-            anaRotateFactor = anaRotateFactors[anaFactorSel]
-            --Vibration when back to def factor
-            if (anaFactorSel==#anaMoveFactors) then
-               vibStart=os.clock()
-               setXBox360ControllerVibration(xbc.ControllerID, 0, 65535)
-            end
-        end
-    end
 
     --Move and Rotate with Analog Sticks
     -- parameters analog axis for: Move X, Move Z, Move Y, Roate Y (Y is up/down)
@@ -456,7 +481,7 @@ function debugDisp()
         xbcMsg = xbcMsg..   ", RX:"..anaPercent(xbc.ThumbRightX)
         xbcMsg = xbcMsg..   ", RY:"..anaPercent(xbc.ThumbRightY)
     end
-    msg = "v5, sec:"..sec..", XBC:"..xbcConnStr..", Enabled: "..tostring(btEnabled)
+    msg = "v5, sec:"..sec..", XBC:"..xbcConnStr..", Enabled: "..tostring(camControlEnabled)
     msg = msg..xbcMsg
     if (eular == nil) then
         eular=getEular()
@@ -481,7 +506,10 @@ function infoUpdate()
         xbcMsg = xbcMsg..   ", RX:"..anaPercent(xbc.ThumbRightX)
         xbcMsg = xbcMsg..   ", RY:"..anaPercent(xbc.ThumbRightY)
     end
-    f.t_hackEnabled.checked = btEnabled
+    -- Toggles --
+    f.t_hackEnabled.checked = camControlEnabled
+    f.t_camControlEnabled.checked = camControlEnabled
+    f.t_camControlEnabled.caption = camControlModeNames[camControlMode]
 
     local posX = readDouble(posXAddr)
     local posY = readDouble(posYAddr)
@@ -541,10 +569,9 @@ function infoUpdate()
     end
     --msg = msg..nl.."Angle X:"..e.x.." ,Y:"..e.y.." ,Z:"..e.z.." ,Fac Sel:"..anaFactorSel..", Move:"..anaMoveFactor..", Rotate:"..anaRotateFactor
 
-    f.e_t1.text = readFloat(mapRelXAddr)
-    if (mapChaX ~= nil) and (mapChaX ~= 0) then
-        f.e_t2.text = mapRelX/mapChaX
-    end
+    f.e_t1.text = ""
+    f.e_t2.caption = "Speed"
+    f.e_t2.text = anaFactorSel
 
 
     -- calc --
@@ -619,20 +646,23 @@ getAutoAttachList().add(PROCESS_NAME)
 t2_interval = 10 -- input timer
 
 autoStart=true
-btEnabled=true
+camControlEnabled=true
 -- Control Style
 -- 1: CS style: Left hand walk/strafe, right hand turn/elev
 -- 2: Racing style: Left hand turn/elev, right hand drift/gas
 -- 3: Space Fighter Style: Left hand 3D strafe, right hand turn/throttle
 controlStyle =1
 anaSensitivityExp = 1/3
-anaFactorSel = 1 -- 1 based table
-anaFactorSelFwd=1
+anaFactorSel = 2 -- move/rotate speed
 anaMoveFactors = {0.05, 0.15, 5}
 anaRotateFactors = {2, 3, 5}
 anaDeadZone = 3000
 vibDuration = 0.2 --secs
 worldScale = 3600
+camControlModeNames={"Free Cam", "Follow Cam"}
+CAM_CTRL_MODE_FREE=1
+CAM_CTRL_MODE_FOLLOW=2
+camControlMode = CAM_CTRL_MODE_FREE
 ---
 xbc = nil
 sec = 0
