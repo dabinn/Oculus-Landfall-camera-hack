@@ -319,8 +319,7 @@ function followCamAcitve()
     d.x = readFloat(mapParentXAddr)+readFloat(offOrgXAddr)-readFloat(mapChaXAddr)
     d.z = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)-readFloat(mapChaZAddr)
     d.y = readFloat(mapParentYAddr)-mBasePos.y*worldScale-readFloat(mapChaYAddr)
-    print (distance3D(d.x, d.z, 0))
-    if (distance3D(d.x, d.z, 0) < followCamResetDistanceXZ and abs(d.y) < followCamResetHeight) then
+    if (not followCamReset) then
         local r=vectorRotate2D(d.x, d.z, -eularBase.y)
         --print("followCAM switch: d.x:"..d.x..", d.z:"..d.z..", r.x:"..r.x..", r.z"..r.z)
         mBasePos.x =  -r.x/worldScale
@@ -328,13 +327,14 @@ function followCamAcitve()
         writeFloat(basePosXAddr, mBasePos.x)
         writeFloat(basePosZAddr, mBasePos.z)
     else
-        print("followCAM default")
+        print("followCAM reset")
         -- When cam position is too far
         -- Reset followCAM to default distance
-        mBasePos.x =  followCamOffsetDef.x/worldScale
-        mBasePos.z =  followCamOffsetDef.z/worldScale
+        mBasePos.x =  0/worldScale
+        mBasePos.z =  followCamResetDistanceXZ/worldScale
         -- basePosY is calulated from parent origin
-        mBasePos.y = -(readFloat(mapChaYAddr)-readFloat(mapParentYAddr)+followCamOffsetDef.y)/worldScale
+        mBasePos.y = -(readFloat(mapChaYAddr)-readFloat(mapParentYAddr)+followCamResetHeight)/worldScale
+        followCamReset=false
         writeFloat(basePosXAddr, mBasePos.x)
         writeFloat(basePosZAddr, mBasePos.z)
         writeFloat(basePosYAddr, mBasePos.y)
@@ -361,25 +361,44 @@ function followCamDeactive()
     writeFloat(basePosXAddr, mBasePos.x)
     writeFloat(basePosZAddr, mBasePos.z)
 end
-
+function freeCamActive()
+    mrXinputAxisBlock.Active=true
+end
+function freeCamDeactive()
+    mrXinputAxisBlock.Active=false
+end
 function switchCamMode(newMode)
     worldScale=getWorldScale()
     eularBase=getEularBase()
-    if (newMode==camMode) then
-        if (newMode==CAM_MODE_FOLLOW) then
+    if (newMode==CAM_MODE_FREE) then
+        -- check last mode
+        if (camMode==CAM_MODE_FREE) then
+            newMode=CAM_MODE_NONE
+            freeCamDeactive()
+        elseif (camMode == CAM_MODE_FOLLOW) then
             followCamDeactive()
+            freeCamActive()
+        else
+            freeCamActive()
         end
-        mrXinputAxisBlock.Active=false
-        newMode=CAM_MODE_NONE
-    elseif (newMode==CAM_MODE_FREE) then
-        if (camMode == CAM_MODE_FOLLOW) then
-            followCamDeactive()
-        end
-        mrXinputAxisBlock.Active=true
     elseif (newMode==CAM_MODE_FOLLOW) then
-        followCamAcitve()
-        mrXinputAxisBlock.Active=false
+        if (camMode==CAM_MODE_FREE) then
+            freeCamDeactive()
+            followCamAcitve()
+        elseif (camMode == CAM_MODE_FOLLOW and (not followCamReset)) then
+            newMode=CAM_MODE_NONE
+            followCamDeactive()
+        else
+            followCamAcitve()
+        end 
+    else
+        if (camMode==CAM_MODE_FREE) then
+            freeCamActive()
+        elseif (camMode == CAM_MODE_FOLLOW) then
+            followCamAcitve()
+        end
     end
+
     camMode=newMode
 end
 
@@ -430,7 +449,6 @@ end
 function on_GAMEPAD_LEFT_SHOULDER_released(btn)
     decreaseSpeed()
 end
-
 function on_GAMEPAD_RIGHT_SHOULDER_released(btn)
     increaseSpeed()
 end
@@ -439,15 +457,17 @@ end
 function on_GAMEPAD_DPAD_DOWN_released(btn)
 end
 function on_GAMEPAD_DPAD_LEFT_released(btn)
-    switchCamMode(CAM_MODE_FOLLOW)
 end
 function on_GAMEPAD_DPAD_RIGHT_released(btn)
-    switchCamMode(CAM_MODE_FREE)
 end
 function on_GAMEPAD_BACK_released(btn)
     gameResetView()
 end
 function on_GAMEPAD_LEFT_THUMB_released(btn)
+    switchCamMode(CAM_MODE_FOLLOW)
+end
+function on_GAMEPAD_LEFT_THUMB_hold(btn)
+    followCamReset=true
     switchCamMode(CAM_MODE_FOLLOW)
 end
 function on_GAMEPAD_RIGHT_THUMB_released(btn)
@@ -459,20 +479,38 @@ function xbcCheckButtons()
     -- check button status
     for btn, pressed in pairs(xbc) do
         -- Only checks buttons, skip analog stick and other info
-        if (string.sub(btn, 0,8)=="GAMEPAD_") and (pressed) then
+        local btnInitialStr="GAMEPAD_"
+        if (string.sub(btn, 0,string.len(btnInitialStr))==btnInitialStr) and (pressed) then
             -- button pressed
             -- Register a botton state
-            if (not xbcButtonStat[btn]) then
+            if (xbcButtonStat[btn]==nil or xbcButtonStat[btn]==0) then
                 print("> "..btn.." DOWN")
-                xbcButtonStat[btn]=true
+                xbcButtonStat[btn]=1
             else
                 --button hold
+                if (xbcButtonStat[btn] ~= -1) then
+                    xbcButtonStat[btn]=xbcButtonStat[btn]+1
+                    if (xbcButtonStat[btn] >= buttonHoldThreshold) then
+                        print("> "..btn.." HOLD")
+                        xbcButtonStat[btn]=-1
+                        -- Call button function if exist
+                        local btnFuncName= "on_"..btn.."_hold"
+                        if (_G[btnFuncName] ~= nil) then
+                            _G[btnFuncName](btn)
+                        else
+                            btnFuncName= "on_"..btn.."_released"
+                            if (_G[btnFuncName] ~= nil) then
+                                _G[btnFuncName](btn)
+                            end
+    
+                        end
+                    end
+                end
             end
         else
             -- BTN released, do something
-            if (xbcButtonStat[btn]) then
+            if (xbcButtonStat[btn] and xbcButtonStat[btn]>0) then
                 -- UnRegister a botton state
-                xbcButtonStat[btn]=false
                 print("> "..btn.." UP")
 
                 -- Call button function if exist
@@ -481,6 +519,7 @@ function xbcCheckButtons()
                     _G[btnFuncName](btn)
                 end
             end
+            xbcButtonStat[btn]=0
         end
     end
 end 
@@ -748,7 +787,7 @@ math.rad2Deg = 180 / math.pi
 
 PROCESS_NAME = 'LandfallClient-Win64-Shipping.exe'
 getAutoAttachList().add(PROCESS_NAME)
-
+f=UDF1
 -- Parameters --
 
 -- timer is inaccure --
@@ -782,17 +821,16 @@ CAM_MODE_NONE=1
 CAM_MODE_FREE=2
 CAM_MODE_FOLLOW=3
 camMode = CAM_MODE_NONE
+-- hold seconds --
+buttonHoldThreshold=0.3*(1000/t2_interval)
 -- Position fix
 followCamOriginFix = {}
 followCamOriginFix.x = 0 -- Monitor displays left eye position, check in monitor 
 followCamOriginFix.z = 0
 -- Default follow cam distance
-followCamOffsetDef={}
-followCamOffsetDef.x=0
-followCamOffsetDef.z=2000
-followCamOffsetDef.y=1000
-followCamResetDistanceXZ = 6000
-followCamResetHeight = 2000
+followCamReset=false
+followCamResetDistanceXZ = 1000
+followCamResetHeight = 1000
 -- Game view reset will clear all base data
 -- Remember them will be useful if we don't want reset view changes current position
 mBasePos={}
@@ -810,7 +848,6 @@ sec = 0
 eularBase={}
 eularOvr={}
 xbcButtonStat={}
-setSpeed()
 vibStart = 0 -- os.clock time
 --
 nl="\r\n"
@@ -900,9 +937,7 @@ switchCamMode(CAM_MODE_FREE)
 mrHealth.Active=true
 mrSP.Active=true
 
-f=UDF1
-f.show()
-print("Press ScrLk to Start, Pause to stop")
+
 
 --t1=createTimer(getMainForm(), true) --message output
 t1=createTimer(f, true) --message output
@@ -920,6 +955,8 @@ print("------")
 updateUI()
 updateDebugData()
 
+f.show()
+print("Press ScrLk to Start, Pause to stop")
 
 
 
