@@ -99,8 +99,8 @@ end
 
 function getWorldScale()
     local ws=readFloat(WorldToMetersScaleWhileInFrameAddr)
-    if (ws ~= nil) then
-        ws = worldScale
+    if (ws == nil) then
+       ws = worldScale
     end
     f.b_scale.caption="Scale: "..ws
     return ws
@@ -157,7 +157,6 @@ function anaAdvTransfrom(anaValX, anaValZ, anaValY, anaValRY)
         return
     end
 
-    worldScale=getWorldScale()
     eularBase=getEularBase()
     if (camMode==CAM_MODE_FREE) then
         anaAdvMovePlane(anaPercentX*anaMoveFactor, anaPercentZ*anaMoveFactor)
@@ -400,14 +399,23 @@ function gameResetView()
     end
 end
 
+function setSpeed()
+    if (worldScale == 100) then
+        anaMoveFactor = anaMoveFactorsHanger[anaFactorSel]
+        anaRotateFactor = anaRotateFactorsHanger[anaFactorSel]
+    else
+        anaMoveFactor = anaMoveFactors[anaFactorSel]
+        anaRotateFactor = anaRotateFactors[anaFactorSel]
+    end
+end
+
 function increaseSpeed()
     -- Increase speed
     anaFactorSel = anaFactorSel + 1
     if (anaFactorSel > #anaMoveFactors) then
         anaFactorSel = #anaMoveFactors
     end
-    anaMoveFactor = anaMoveFactors[anaFactorSel]
-    anaRotateFactor = anaRotateFactors[anaFactorSel]
+    setSpeed()
 end
 
 function decreaseSpeed()
@@ -416,8 +424,7 @@ function decreaseSpeed()
     if (anaFactorSel < 1) then
         anaFactorSel = 1
     end
-    anaMoveFactor = anaMoveFactors[anaFactorSel]
-    anaRotateFactor = anaRotateFactors[anaFactorSel]
+    setSpeed()
 end
 
 function on_GAMEPAD_LEFT_SHOULDER_released(btn)
@@ -563,6 +570,8 @@ function timer2_tick(timer)  --fastest timer
     end
 end
 function timer3_tick(timer) -- a little fast timer
+    worldScale=getWorldScale()
+    setSpeed()
     updateUI()
     if DoneState == true then
         timer.destroy()
@@ -758,9 +767,13 @@ autoStart=true
 -- 3: Space Fighter Style: Left hand 3D strafe, right hand turn/throttle
 controlStyle =1
 anaSensitivityExp = 1/3
-anaFactorSel = 2 -- move/rotate speed
-anaMoveFactors = {0.001, 0.005, 0.01, 0.1, 1}
-anaRotateFactors = {2, 2, 2, 3, 5}
+-- move/rotate speed
+anaFactorSel = 2
+anaMoveFactors = {0.002, 0.005, 0.0125, 0.033, 0.1}
+anaRotateFactors = {0.5, 0.8, 1.2, 2, 3}
+-- move/rotate speed in hanger
+anaMoveFactorsHanger = {0.01, 0.05, 0.25, 1.25, 10}
+anaRotateFactorsHanger = {1, 2, 3, 4, 5}
 anaDeadZone = 3000
 vibDuration = 0.2 --secs
 worldScale = 3600
@@ -773,7 +786,7 @@ camMode = CAM_MODE_NONE
 followCamOriginFix = {}
 followCamOriginFix.x = 0 -- Monitor displays left eye position, check in monitor 
 followCamOriginFix.z = 0
--- Remember the offset, deal with the view calibaration rests the baseOffset values
+-- Default follow cam distance
 followCamOffsetDef={}
 followCamOffsetDef.x=0
 followCamOffsetDef.z=2000
@@ -797,8 +810,7 @@ sec = 0
 eularBase={}
 eularOvr={}
 xbcButtonStat={}
-anaMoveFactor = anaMoveFactors[anaFactorSel]
-anaRotateFactor = anaRotateFactors[anaFactorSel]
+setSpeed()
 vibStart = 0 -- os.clock time
 --
 nl="\r\n"
