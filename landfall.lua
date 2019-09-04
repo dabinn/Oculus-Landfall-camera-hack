@@ -5,206 +5,6 @@ function dprint()
       end
 end
 
-
--- percentage must be 0~1
-function expPercent(percentage, exp)
-    return percentage^(1/exp)
-end
-
-
-function anaPercent(anaVal)
-    if (xbc==nil or not camControlEnabled or math.abs(anaVal) < anaDeadZone) then
-        return 0
-    end
-    -- anaVal=-32767~0~+32767
-    -- anaDeadZone ~=~ 3000~3500
-    -- Minimal push stick ~=~ 10000
-    local anaMax = 32767
-    local anaMin = anaDeadZone
-    local positive = 1
-    local anaValAbs=math.abs(anaVal)
-    if (anaValAbs ~= anaVal) then
-        positive = -1
-    end
-    local anaPercentAbs = (anaValAbs-anaMin)/(anaMax-anaMin)
-    local anaPercentVal = positive*expPercent(anaPercentAbs, anaSensitivityExp)
-    return anaPercentVal
-end
-
-followCamOffsetDef = 500
-followCamAngleDef  = 0
-followCamOffset=followCamOffsetDef
-followCamAngle =followCamAngleDef
-function followCharacter()
-    local mapCamZ=readFloat(mapCamZAddr)
-    local mapCamX=readFloat(mapCamXAddr)
-    local mapCamY=readFloat(mapCamYAddr)
-    local mapChaZ=readFloat(mapChaZAddr)
-    local mapChaX=readFloat(mapChaXAddr)
-    local mapChaY=readFloat(mapChaYAddr)
-    local newMapOffX=mapChaX-mapCamX+100
-    local newMapOffZ=mapChaZ-mapCamZ-followCamOffset
-    writeFloat(mapOffXAddr, newMapOffX)
-    writeFloat(mapOffZAddr, newMapOffZ)
-end
-
--- New method using Settings
--- XZY Movement: Left/Right, Forward/Back, Up/Down
--- Y Rotate
-function anaAdvMoveRotate(anaValX, anaValZ, anaValY, anaValRY)
-    local anaPercentX=anaPercent(anaValX)
-    local anaPercentZ=anaPercent(anaValZ)
-    local anaPercentY=anaPercent(anaValY)
-    local anaPercentRY=anaPercent(anaValRY)
-    
-    followCharacter()
-    
-    local abs=math.abs
-    -- any axis movement
-    if (abs(anaPercentX)+abs(anaPercentY)+abs(anaPercentZ)+abs(anaPercentRY) == 0) then
-        return
-    end
-    
-    eular=getBaseEular()
-    --anaAdvMovePlane(anaPercentX*anaMoveFactor, anaPercentZ*anaMoveFactor)
-    anaMoveElev(anaPercentY*anaMoveFactor)
-    anaAdvRotate(anaPercentRY*anaRotateFactor)
-end
-
--- Old method using LibOVR
--- XZY Movement: Left/Right, Forward/Back, Up/Down
--- Y Rotate
-function anaMoveRotate(anaValX, anaValZ, anaValY, anaValRY)
-    local anaPercentX=anaPercent(anaValX)
-    local anaPercentZ=anaPercent(anaValZ)
-    local anaPercentY=anaPercent(anaValY)
-    local anaPercentRY=anaPercent(anaValRY)
-    
-    local abs=math.abs
-    -- any axis movement
-    if (abs(anaPercentX)+abs(anaPercentY)+abs(anaPercentZ)+abs(anaPercentRY) == 0) then
-        return
-    end
-    
-    eular=getEular()
-    anaMovePlane(anaPercentX*anaMoveFactor, anaPercentZ*anaMoveFactor)
-    anaMoveElev(anaPercentY*anaMoveFactor)
-    anaRotate(anaPercentRY*anaRotateFactor)
-end
-
-function anaMoveElev(move)
-    -- Word Y: up+, down-
-    if (move == 0) then return end
-    writeDouble(posYAddr, readDouble(posYAddr)+move)
-end
-
--- New method using Settings
-function anaAdvMovePlane(moveX, moveZ)
-    -- Word X: rigt=+, back=-
-    -- Word Z: forwad=-, back=+
-    if (moveX == 0) and (moveZ == 0) then return end
-
-    local moveDist = math.sqrt(moveX^2+moveZ^2)
-    local moveAngle = math.deg(math.atan(-moveX/moveZ))
-    if (moveZ <  0) then
-        moveAngle = moveAngle + 180
-    end
-    -- Would XYZ always changed by reseting the view
-    -- So the initial eular.y should by ignore, 
-    -- It needs to remeber the value or count the total rotation after the view is reseted.
-    -- Monitor other mem addr which affected by reset may help, but still has some issue.
-    -- The best way should be move along the realtime HMD direction.
-    
-    -- No need to add original eular.y
-    local targetAngle = (eular.y + moveAngle)%360
-    local dX = -moveDist * math.sin(math.rad(targetAngle))
-    local dZ = -moveDist * math.cos(math.rad(targetAngle))
-    local targetX = readFloat(mapOffXAddr) + dX *worldScale
-    local targetZ = readFloat(mapOffZAddr) - dZ *worldScale
-    writeFloat(mapOffXAddr, targetX)
-    writeFloat(mapOffZAddr, targetZ)
-end
-
--- Old method using LibOVR
-function anaMovePlane(moveX, moveZ)
-    -- Word X: rigt=+, back=-
-    -- Word Z: forwad=-, back=+
-    if (moveX == 0) and (moveZ == 0) then return end
-
-    local moveDist = math.sqrt(moveX^2+moveZ^2)
-    local moveAngle = math.deg(math.atan(-moveX/moveZ))
-    if (moveZ <  0) then
-        moveAngle = moveAngle + 180
-    end
-    -- Would XYZ always changed by reseting the view
-    -- So the initial eular.y should by ignore, 
-    -- It needs to remeber the value or count the total rotation after the view is reseted.
-    -- Monitor other mem addr which affected by reset may help, but still has some issue.
-    -- The best way should be move along the realtime HMD direction.
-    
-    -- No need to add original eular.y
-    local eularRst = getEularRst()
-    local targetAngle = (eular.y - eularRst.y  + moveAngle)%360
-    --local targetAngle = moveAngle
-    
-    local dX = -moveDist * math.sin(math.rad(targetAngle))
-    local dZ = -moveDist * math.cos(math.rad(targetAngle))
-    local targetX = readDouble(posXAddr) + dX
-    local targetZ = readDouble(posZAddr) + dZ
-    --print (">>> rstAngle:"..eularRst.y.." ,fwdAngle:"..eular.y..", moveAngle:"..moveAngle..", targetAngle:"..targetAngle..", Dist:"..moveDist..", mX:"..moveX..", mZ:"..moveZ..", dX:"..dX..", dZ:"..dZ)
-    writeDouble(posXAddr, targetX)
-    writeDouble(posZAddr, targetZ)
-end
-
--- New method using Settings
--- Y Rotate
-function anaAdvRotate(rotAngle)
-
-    if (rotAngle == 0) then return end
-    local ez = eular.z
-    local ey = (eular.y-rotAngle) % 360
-    local ex = eular.x
-    local q=eulerToQuat(newE(ez,ey,ex))
-
-    writeFloat(baseRotZAddr, q.z)
-    writeFloat(baseRotYAddr, q.y)
-    writeFloat(baseRotXAddr, q.x)
-    writeFloat(baseRotWAddr, q.w)
-        
-    
-end
-
--- Old method using LibOVR
--- Y Rotate
-function anaRotate(rotAngle)
-    -- Rest Vew: In Game=Oculus Rest View, Changes World XYZ. Front = 0 degree angle
-    -- rotQy: Changes virtual screen viewing direction (BOTH VR and Monitor), doesnot change World XYZ. HMD angle clockwise
-    -- rotQyHMD: Changes VR HEAD direction to follow viewing change, doesnot change World XYZ. HMD angle anticlockwise. (opposite with rotQy)
-    -- compare to the value of rotQy--
-    -- Turn the Headset to the right and reset, rotQy is +90, and world turns.
-    -- Increase rotQy by 90=180, the World XYZ doesnot reset.
-    -- The Heaset doesnot really changed its direction, but the game think we are turning head to the right
-    -- So the Virtual window turn to Left and shows the 'LEFT side'
-    -- rotQyHMD turns the virtual window back to in front of the face, but this doesnot changes the view in virtual window.
-    -- So the rotQy value for HEAD set is clockwise, for virtual window view is anticlockwise.
-    if (rotAngle == 0) then return end
-    local ey = (eular.y-rotAngle) % 360
-    local q=eulerToQuat(newE(0,ey,0))
-    -- Monitor and HMD use differnt rotation addresses --
-    writeDouble(rotQyAddr, q.y)
-    writeDouble(rotQyHMDAddr, -q.y)
-    writeDouble(rotQwAddr, q.w)
-    writeDouble(rotQwHMDAddr, q.w)
-    
-    -- fix rotation center
-    -- There some left/rigt drift with the rotaion, 
-    -- accourding to the HMD distance to the Oculus reset point
-    -- No proper method to fix this.
-    --anaMovePlane(-rotAngle/1000*1, -rotAngle/1000*1)
-    
-    
-end
-
 -- create Quaternion table --
 function newQ(x,y,z,w)
     local q={}
@@ -214,6 +14,7 @@ function newQ(x,y,z,w)
     q.w=w
     return q
 end
+
 -- create Eular table --
 function newE(x,y,z)
     local e={}
@@ -279,74 +80,371 @@ function eulerToQuat(e)
 end
 
 
-
-
--- Calculate Orientation Angle --
--- New method using Settings
-function getBaseEular() -- Orientation of current forward
-    local eular=quatToEular(newQ(readFloat(baseRotZAddr) ,readFloat(baseRotYAddr), readFloat(baseRotXAddr), readFloat(baseRotWAddr)))
+-- Calculate angles of baseOffsets --
+function getEularBase()
+    local eular=quatToEular(newQ(mBaseRot.x ,mBaseRot.y, mBaseRot.z, mBaseRot.w))
     return eular
 end
 
--- Calculate Orientation Angle --
--- Old method using LibBVR
-function getEular() -- Orientation of current forward
+-- Calculate angles of libOVR --
+function getEularOvr()
     local eular=quatToEular(newQ(0,readDouble(rotQyAddr),0,readDouble(rotQwAddr)))
-    --eular=quatToEular(newQ(0,readDouble(rotQyHMDAddr),0,readDouble(rotQwHMDAddr)))
     return eular
 end
-function getEularHMD() -- Orientation in HMD
-    local eular=quatToEular(newQ(0,readDouble(rotQyHMDAddr),0,readDouble(rotQwHMDAddr)))
-    return eular
-end
-function getEularRst() -- Orientation of the reset view
+-- Calculate angles of libOVR reseting view --
+function getEularOvrRst() -- Orientation of the reset view
     local eular=quatToEular(newQ(0,readDouble(rotQyRstAddr),0,readDouble(rotQwRstAddr)))
     return eular
 end
 
+function getWorldScale()
+    local ws=readFloat(WorldToMetersScaleWhileInFrameAddr)
+    if (ws ~= nil) then
+        ws = worldScale
+    end
+    f.b_scale.caption="Scale: "..ws
+    return ws
+end
+
+function vectorRotate2D(x, z, angle)
+    local rad=math.rad(angle)
+    local sin=math.sin
+    local cos=math.cos
+    local d={}
+    d.x = x*cos(rad)-z*sin(rad)
+    d.z = x*sin(rad)+z*cos(rad)
+    return d
+end
+
+-- Convert liner to exp curve
+-- percentage must be 0~1
+function expPercent(percentage, exp)
+    return percentage^(1/exp)
+end
+
+function anaPercent(anaVal)
+    if (xbc==nil or math.abs(anaVal) < anaDeadZone) then
+        return 0
+    end
+    -- anaVal=-32767~0~+32767
+    -- anaDeadZone ~=~ 3000~3500
+    -- Minimal push stick ~=~ 10000
+    local anaMax = 32767
+    local anaMin = anaDeadZone
+    local positive = 1
+    local anaValAbs=math.abs(anaVal)
+    if (anaValAbs ~= anaVal) then
+        positive = -1
+    end
+    local anaPercentAbs = (anaValAbs-anaMin)/(anaMax-anaMin)
+    local anaPercentVal = positive*expPercent(anaPercentAbs, anaSensitivityExp)
+    return anaPercentVal
+end
+
+
+-- New method using Origin/BaseOffsets
+-- XZY Movement: Left/Right, Forward/Back, Up/Down
+-- Y Rotate
+function anaAdvTransfrom(anaValX, anaValZ, anaValY, anaValRY)
+    local anaPercentX=anaPercent(anaValX)
+    local anaPercentZ=anaPercent(anaValZ)
+    local anaPercentY=anaPercent(anaValY)
+    local anaPercentRY=anaPercent(anaValRY)
+
+    local abs=math.abs
+    -- any axis movement
+    if (abs(anaPercentX)+abs(anaPercentY)+abs(anaPercentZ)+abs(anaPercentRY) == 0) then
+        return
+    end
+
+    worldScale=getWorldScale()
+    eularBase=getEularBase()
+    if (camMode==CAM_MODE_FREE) then
+        anaAdvMovePlane(anaPercentX*anaMoveFactor, anaPercentZ*anaMoveFactor)
+        anaAdvMoveElev(anaPercentY*anaMoveFactor)
+        anaAdvRotate(anaPercentRY*anaRotateFactor)
+    elseif (camMode==CAM_MODE_FOLLOW) then
+        -- Slowly rotate Cam when charactor walk/aim to left or right
+        anaAdvRotate(anaPercentRY*anaRotateFactor*followCamModeRotateFactor)
+    end
+end
+followCamModeRotateFactor=0.5
+
+-- Old method using LibOVR
+-- XZY Movement: Left/Right, Forward/Back, Up/Down
+-- Y Rotate
+function anaTransfrom(anaValX, anaValZ, anaValY, anaValRY)
+    local anaPercentX=anaPercent(anaValX)
+    local anaPercentZ=anaPercent(anaValZ)
+    local anaPercentY=anaPercent(anaValY)
+    local anaPercentRY=anaPercent(anaValRY)
+    
+    local abs=math.abs
+    -- any axis movement
+    if (abs(anaPercentX)+abs(anaPercentY)+abs(anaPercentZ)+abs(anaPercentRY) == 0) then
+        return
+    end
+    
+    eularOvr=getEularOvr()
+    anaMovePlane(anaPercentX*anaMoveFactor, anaPercentZ*anaMoveFactor)
+    anaMoveElev(anaPercentY*anaMoveFactor)
+    anaRotate(anaPercentRY*anaRotateFactor)
+end
+
+-- New method using Origin/BaseOffsets
+function anaAdvMovePlane(moveX, moveZ)
+    -- Word X: rigt=+, back=-
+    -- Word Z: forwad=-, back=+
+    if (moveX == 0) and (moveZ == 0) then return end
+
+    if (camMode==CAM_MODE_FREE) then
+        -- Map corrdinate always changed by reseting the view
+        -- The orign offset is the same with Map coordinate
+        -- Just Need to calculate vectors from the base angle
+        local d=vectorRotate2D(moveX, moveZ, eularBase.y)
+        f.t1.caption = "move"
+        f.t1a.text = string.format( "%.8f",moveX)
+        f.t1b.text = string.format( "%.8f",moveZ)
+        f.t2.caption = "rMove"
+        f.t2a.text = string.format( "%.8f",d.x)
+        f.t2b.text = string.format( "%.8f",d.z)      
+        -- changes Offset Origin to move
+        local targetX, targetZ
+        targetX = readFloat(offOrgXAddr) + d.x *worldScale
+        targetZ = readFloat(offOrgZAddr) + d.z *worldScale
+        writeFloat(offOrgXAddr, targetX)
+        writeFloat(offOrgZAddr, targetZ)
+    end
+end
+
+-- Old method using LibOVR
+function anaMovePlane(moveX, moveZ)
+    -- Word X: rigt=+, back=-
+    -- Word Z: forwad=-, back=+
+    if (moveX == 0) and (moveZ == 0) then return end
+
+    -- Map corrdinate always changed by reseting the view
+    -- So the OVR reset(calibration) angle should by remove to get the correct related angle
+    local eularRst = getEularOvrRst()
+    local d=vectorRotate2D(moveX, moveZ, eularOvr.y-eularRst.y)
+    local targetX = readDouble(posXAddr) + d.x
+    local targetZ = readDouble(posZAddr) + d.z
+    writeDouble(posXAddr, targetX)
+    writeDouble(posZAddr, targetZ)
+end
+
+function anaAdvMoveElev(move)
+    -- Word Y: up+, down-
+    if (move == 0) then return end
+    o="t1"
+    f[o..'c'].text = string.format( "%.8f",move)
+    mBasePos.y=mBasePos.y-move
+    writeFloat(basePosYAddr, mBasePos.y)
+end
+
+function anaMoveElev(move)
+    -- Word Y: up+, down-
+    if (move == 0) then return end
+    writeDouble(posYAddr, readDouble(posYAddr)-move)
+end
+
+-- New method using Origin/BaseOffsets
+-- Y Rotate
+function anaAdvRotate(rotAngle)
+
+    if (rotAngle == 0) then return end
+    local ez = eularBase.z
+    local ey = (eularBase.y-rotAngle) % 360
+    local ex = eularBase.x
+    mBaseRot=eulerToQuat(newE(ez,ey,ex))
+
+    writeFloat(baseRotZAddr, mBaseRot.z)
+    writeFloat(baseRotYAddr, mBaseRot.y)
+    writeFloat(baseRotXAddr, mBaseRot.x)
+    writeFloat(baseRotWAddr, mBaseRot.w)
+end
+
+-- Old method using LibOVR
+-- Y Rotate
+function anaRotate(rotAngle)
+    -- Rest Vew: In Game=Oculus Rest View, Changes World XYZ. Front = 0 degree angle
+    -- rotQy: Changes virtual screen viewing direction (BOTH VR and Monitor), doesnot change World XYZ. HMD angle clockwise
+    -- rotQyHMD: Changes VR HEAD direction to follow viewing change, doesnot change World XYZ. HMD angle anticlockwise. (opposite with rotQy)
+    -- compare to the value of rotQy--
+    -- Turn the Headset to the right and reset, rotQy is +90, and world turns.
+    -- Increase rotQy by 90=180, the World XYZ doesnot reset.
+    -- The Heaset doesnot really changed its direction, but the game think we are turning head to the right
+    -- So the Virtual window turn to Left and shows the 'LEFT side'
+    -- rotQyHMD turns the virtual window back to in front of the face, but this doesnot changes the view in virtual window.
+    -- So the rotQy value for HEAD set is clockwise, for virtual window view is anticlockwise.
+    if (rotAngle == 0) then return end
+    local ey = (eularOvr.y-rotAngle) % 360
+    local q=eulerToQuat(newE(0,ey,0))
+    -- Monitor and HMD use differnt rotation addresses --
+    writeDouble(rotQyAddr, q.y)
+    writeDouble(rotQyHMDAddr, -q.y)
+    writeDouble(rotQwAddr, q.w)
+    writeDouble(rotQwHMDAddr, q.w)
+    
+    -- fix rotation center
+    -- There some left/rigt drift with the rotaion, 
+    -- accourding to the HMD distance to the Oculus reset point
+    -- No proper method to fix this.
+    --anaMovePlane(-rotAngle/1000*1, -rotAngle/1000*1)
+    
+    
+end
+
+function followCharacter()
+    local mapChaZ=readFloat(mapChaZAddr)
+    local mapChaX=readFloat(mapChaXAddr)
+    local mapChaY=readFloat(mapChaYAddr)
+    -- move offset origin to charatoer location
+    local newOffOrgX=mapChaX-readFloat(mapParentXAddr)+followCamOriginFix.x
+    local newOffOrgZ=mapChaZ-readFloat(mapParentZAddr)+followCamOriginFix.z
+    -- There is no OffOrgY property, only XZ
+    writeFloat(offOrgXAddr, newOffOrgX)
+    writeFloat(offOrgZAddr, newOffOrgZ)
+    -- Question: Let followCharacter() update height?
+end
+function distance3D(dx, dz, dy)
+    local xzDist = math.sqrt(dx^2+dz^2)
+    return math.sqrt(xzDist^2+dz^2)
+end
+
+function followCamAcitve()
+    -- set basePos (the offset distance from cam to charactor)
+    -- calculate the distance between character to current position
+    local d={}
+    local abs=math.abs
+    d.x = readFloat(mapParentXAddr)+readFloat(offOrgXAddr)-readFloat(mapChaXAddr)
+    d.z = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)-readFloat(mapChaZAddr)
+    d.y = readFloat(mapParentYAddr)-mBasePos.y*worldScale-readFloat(mapChaYAddr)
+    print (distance3D(d.x, d.z, 0))
+    if (distance3D(d.x, d.z, 0) < followCamResetDistanceXZ and abs(d.y) < followCamResetHeight) then
+        local r=vectorRotate2D(d.x, d.z, -eularBase.y)
+        --print("followCAM switch: d.x:"..d.x..", d.z:"..d.z..", r.x:"..r.x..", r.z"..r.z)
+        mBasePos.x =  -r.x/worldScale
+        mBasePos.z =  -r.z/worldScale
+        writeFloat(basePosXAddr, mBasePos.x)
+        writeFloat(basePosZAddr, mBasePos.z)
+    else
+        print("followCAM default")
+        -- When cam position is too far
+        -- Reset followCAM to default distance
+        mBasePos.x =  followCamOffsetDef.x/worldScale
+        mBasePos.z =  followCamOffsetDef.z/worldScale
+        -- basePosY is calulated from parent origin
+        mBasePos.y = -(readFloat(mapChaYAddr)-readFloat(mapParentYAddr)+followCamOffsetDef.y)/worldScale
+        writeFloat(basePosXAddr, mBasePos.x)
+        writeFloat(basePosZAddr, mBasePos.z)
+        writeFloat(basePosYAddr, mBasePos.y)
+        -- Question: keep view angle?
+    end
+    -- Move the offset origin to the character , This is also updated by timer repeatedly
+    followCharacter()
+end
+function followCamDeactive()
+    -- move the origin from charactor back to free cam pos
+    -- reset basePos
+    local d={}
+    d.x=mBasePos.x
+    d.z=mBasePos.z
+    local r=vectorRotate2D(d.x, d.z, eularBase.y)
+    local newOffOrgX=readFloat(offOrgXAddr)-followCamOriginFix.x-r.x*worldScale
+    local newOffOrgZ=readFloat(offOrgZAddr)-followCamOriginFix.z-r.z*worldScale
+    --print("deactive: dx:"..d.x..", dz:"..d.z..", rx:"..r.x..", .z"..r.z)
+    mBasePos.x=0
+    mBasePos.z=0
+    -- no need to reset Y position, it always use basePos to move in both mode
+    writeFloat(offOrgXAddr, newOffOrgX)
+    writeFloat(offOrgZAddr, newOffOrgZ)
+    writeFloat(basePosXAddr, mBasePos.x)
+    writeFloat(basePosZAddr, mBasePos.z)
+end
+
+function switchCamMode(newMode)
+    worldScale=getWorldScale()
+    eularBase=getEularBase()
+    if (newMode==camMode) then
+        if (newMode==CAM_MODE_FOLLOW) then
+            followCamDeactive()
+        end
+        mrXinputAxisBlock.Active=false
+        newMode=CAM_MODE_NONE
+    elseif (newMode==CAM_MODE_FREE) then
+        if (camMode == CAM_MODE_FOLLOW) then
+            followCamDeactive()
+        end
+        mrXinputAxisBlock.Active=true
+    elseif (newMode==CAM_MODE_FOLLOW) then
+        followCamAcitve()
+        mrXinputAxisBlock.Active=false
+    end
+    camMode=newMode
+end
+
+function gameResetView()
+    -- Reset position when the game excuting Re-calibrate
+    writeFloat(offOrgXAddr, 0)
+    writeFloat(offOrgZAddr, 0)
+    mBasePos.x=0
+    mBasePos.z=0
+    mBasePos.y=0
+    mBaseRot.x=0
+    mBaseRot.z=0
+    mBaseRot.y=0
+    mBaseRot.w=1
+    if (camMode==CAM_MODE_FOLLOW) then
+        camMode=CAM_MODE_FREE
+    end
+end
+
+function increaseSpeed()
+    -- Increase speed
+    anaFactorSel = anaFactorSel + 1
+    if (anaFactorSel > #anaMoveFactors) then
+        anaFactorSel = #anaMoveFactors
+    end
+    anaMoveFactor = anaMoveFactors[anaFactorSel]
+    anaRotateFactor = anaRotateFactors[anaFactorSel]
+end
+
+function decreaseSpeed()
+    -- Decrease speed
+    anaFactorSel = anaFactorSel - 1
+    if (anaFactorSel < 1) then
+        anaFactorSel = 1
+    end
+    anaMoveFactor = anaMoveFactors[anaFactorSel]
+    anaRotateFactor = anaRotateFactors[anaFactorSel]
+end
 
 function on_GAMEPAD_LEFT_SHOULDER_released(btn)
-            -- Decrease speed
-            anaFactorSel = anaFactorSel - 1
-            if (anaFactorSel < 1) then
-                anaFactorSel = 1
-            end
-            anaMoveFactor = anaMoveFactors[anaFactorSel]
-            anaRotateFactor = anaRotateFactors[anaFactorSel]
+    decreaseSpeed()
 end
 
 function on_GAMEPAD_RIGHT_SHOULDER_released(btn)
-            -- Increase speed
-            anaFactorSel = anaFactorSel + 1
-            if (anaFactorSel > #anaMoveFactors) then
-                anaFactorSel = #anaMoveFactors
-            end
-            anaMoveFactor = anaMoveFactors[anaFactorSel]
-            anaRotateFactor = anaRotateFactors[anaFactorSel]
+    increaseSpeed()
 end
-
 function on_GAMEPAD_DPAD_UP_released(btn)
-    camControlMode = CAM_CTRL_MODE_FOLLOW
 end
 function on_GAMEPAD_DPAD_DOWN_released(btn)
-    camControlMode = CAM_CTRL_MODE_FREE
 end
 function on_GAMEPAD_DPAD_LEFT_released(btn)
+    switchCamMode(CAM_MODE_FOLLOW)
 end
 function on_GAMEPAD_DPAD_RIGHT_released(btn)
+    switchCamMode(CAM_MODE_FREE)
 end
 function on_GAMEPAD_BACK_released(btn)
+    gameResetView()
 end
 function on_GAMEPAD_LEFT_THUMB_released(btn)
+    switchCamMode(CAM_MODE_FOLLOW)
 end
 function on_GAMEPAD_RIGHT_THUMB_released(btn)
-    -- Enable camera control --
-    camControlEnabled= not camControlEnabled
-    --Vibration when enabled
-    if (camControlEnabled) then
-       vibStart=os.clock()
-       setXBox360ControllerVibration(xbc.ControllerID, 35535, 0)
-    end
+    switchCamMode(CAM_MODE_FREE)
 end
 
 function xbcCheckButtons()
@@ -381,8 +479,17 @@ function xbcCheckButtons()
 end 
 
 
--- Timer update xbox controller status --
+-- Timer updates --
 function xbcGetState()
+    -- check Game Ready --
+    if(not checkGameIsReady()) then
+        return
+    end
+
+    if (camMode==CAM_MODE_FOLLOW) then
+        followCharacter()
+    end
+
     -- Read Xbox Controller state
     xbc = getXBox360ControllerState();
     if (xbc==nil) then
@@ -403,16 +510,16 @@ function xbcGetState()
     -- XZY Movement: Left/Right, Forward/Back, Up/Down
     -- Rotate: Left/Right
     -- Original method: Use libOvr calibration data
-    -- New method: Use BaseOffest/Orientation in Settings
+    -- New method: Use Origin/BaseOffest in Settings
     if (controlStyle == 1) then --CS style
-        --anaMoveRotate(xbc.ThumbLeftX, xbc.ThumbLeftY, xbc.ThumbRightY, xbc.ThumbRightX)
-        anaAdvMoveRotate(xbc.ThumbLeftX, xbc.ThumbLeftY, xbc.ThumbRightY, xbc.ThumbRightX)
+        --anaTransfrom(xbc.ThumbLeftX, xbc.ThumbLeftY, xbc.ThumbRightY, xbc.ThumbRightX)
+        anaAdvTransfrom(xbc.ThumbLeftX, xbc.ThumbLeftY, xbc.ThumbRightY, xbc.ThumbRightX)
     elseif (controlStyle == 2) then --Racing style
-        --anaMoveRotate(xbc.ThumbRightX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbLeftX)
-        anaAdvMoveRotate(xbc.ThumbRightX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbLeftX)
+        --anaTransfrom(xbc.ThumbRightX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbLeftX)
+        anaAdvTransfrom(xbc.ThumbRightX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbLeftX)
     else -- Space Fighter Style
-        --anaMoveRotate(xbc.ThumbLeftX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbRightX)
-        anaAdvMoveRotate(xbc.ThumbLeftX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbRightX)
+        --anaTransfrom(xbc.ThumbLeftX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbRightX)
+        anaAdvTransfrom(xbc.ThumbLeftX, xbc.ThumbRightY, xbc.ThumbLeftY, xbc.ThumbRightX)
     end
 end
 
@@ -421,6 +528,9 @@ function pressStart()
 end
 function pressStop()
     timerStop()
+    mrXinputAxisBlock.Active=false
+    mrHealth.Active=false
+    mrSP.Active=false
 end
 
 function timerStart()
@@ -439,20 +549,21 @@ function timerStop()
     --t3.destroy()
     print("Stopped")
 end
-function timer1_tick(timer) 
+function timer1_tick(timer)  -- 1 second timer
     --debugDisp()
+    updateDebugData()
     if DoneState == true then
         timer.destroy()
     end
 end
-function timer2_tick(timer) 
+function timer2_tick(timer)  --fastest timer
     xbcGetState()
     if DoneState == true then
         timer.destroy()
     end
 end
-function timer3_tick(timer) 
-    infoUpdate()
+function timer3_tick(timer) -- a little fast timer
+    updateUI()
     if DoneState == true then
         timer.destroy()
     end
@@ -464,7 +575,6 @@ function FormClose(sender)
 end
 
 function debugDisp()
-
     sec=sec+1
     local msg = ""
     local xbcMsg = ""
@@ -481,23 +591,48 @@ function debugDisp()
         xbcMsg = xbcMsg..   ", RX:"..anaPercent(xbc.ThumbRightX)
         xbcMsg = xbcMsg..   ", RY:"..anaPercent(xbc.ThumbRightY)
     end
-    msg = "v5, sec:"..sec..", XBC:"..xbcConnStr..", Enabled: "..tostring(camControlEnabled)
+    msg = "v5, sec:"..sec..", XBC:"..xbcConnStr..", Enabled: "
     msg = msg..xbcMsg
-    if (eular == nil) then
-        eular=getEular()
+    if (eularOvr == nil) then
+        eularOvr=getEularOvr()
     end
-    local e=getEular()
+    local e=getEularOvr()
     msg = msg..nl.."Angle X:"..e.x.." ,Y:"..e.y.." ,Z:"..e.z.." ,Fac Sel:"..anaFactorSel..", Move:"..anaMoveFactor..", Rotate:"..anaRotateFactor
     --print(msg)
     --dprint()
 end
 
-function infoUpdate()
+-- todo: check game and map ready
+function checkGameIsReady()
+    -- check Map loaded --
+    if(readDouble(posXAddr) == nil) then
+        return false
+    else
+        return true
+    end
+end
+function checkMapIsReady()
+end
 
+function updateUI()
+    local o
+    f.b_speed.caption = "Speed: "..anaFactorSel.." / "..#anaMoveFactors.." ("..anaMoveFactor.." )"
+
+    -- Toggles --
+    f.t_mapReady = checkGameIsReady()
+    f.t_camControlEnabled.checked = camMode~=CAM_MODE_NONE
+    f.t_camControlEnabled.caption = camModeNames[camMode]
     if (xbc==nil) then
         f.t_xbcConnected.checked=false
     else
         f.t_xbcConnected.checked=true
+    end
+end
+
+
+function updateDebugData()
+    local o
+    if (xbc~=nil) then
         -- XBC Analog Stick range: XY -32767~32767, dz range 1017~2329
         xbcMsg =          " - LX:"..xbc.ThumbLeftX..", LY:"..xbc.ThumbLeftY
         xbcMsg = xbcMsg..", RX:"..xbc.ThumbRightX..", RY:"..xbc.ThumbRightY
@@ -506,107 +641,78 @@ function infoUpdate()
         xbcMsg = xbcMsg..   ", RX:"..anaPercent(xbc.ThumbRightX)
         xbcMsg = xbcMsg..   ", RY:"..anaPercent(xbc.ThumbRightY)
     end
-    -- Toggles --
-    f.t_hackEnabled.checked = camControlEnabled
-    f.t_camControlEnabled.checked = camControlEnabled
-    f.t_camControlEnabled.caption = camControlModeNames[camControlMode]
 
-    local posX = readDouble(posXAddr)
-    local posY = readDouble(posYAddr)
-    local posZ = readDouble(posZAddr)
-    local posXrst = readDouble(posXRstAddr)
-    local posYrst = readDouble(posYRstAddr)
-    local posZrst = readDouble(posZRstAddr)
-    --
-    local mapPosX = readFloat(mapPosXAddr)
-    local mapPosY = readFloat(mapPosYAddr)
-    local mapPosZ = readFloat(mapPosZAddr)
-    local mapRelX = readFloat(mapRelXAddr)
-    local mapRelY = readFloat(mapRelYAddr)
-    local mapRelZ = readFloat(mapRelZAddr)
-    --
-    local dtX = (posX-posXrst)
-    local dtY = (posY-posYrst)
-    local dtZ = (posZ-posZrst)
-    --
-    local mapChaX = readFloat(mapChaXAddr)
-    local mapChaY = readFloat(mapChaYAddr)
-    local mapChaZ = readFloat(mapChaZAddr)
+    -- check Game Ready --
+    if(not checkGameIsReady()) then
+        return
+    end
+
+
+    local e=getEularBase()
+
+    o="o1"
+    f[o].caption = "Qw"
+    f[o..'a'].text = ""
+    f[o..'b'].text = ""
+    f[o..'c'].text = readFloat(baseRotWAddr)
+    o="o2"
+    f[o].caption = "Qxzy"
+    f[o..'a'].text = readFloat(baseRotXAddr)
+    f[o..'b'].text = readFloat(baseRotZAddr)
+    f[o..'c'].text = readFloat(baseRotYddr)
+    o="o3"
+    f[o].caption = "Angle"
+    f[o..'a'].text = e.x
+    f[o..'b'].text = e.z
+    f[o..'c'].text = e.y
+
+    o="p1"
+    f[o].caption ="Parent"
+    f[o..'a'].text = readFloat(mapParentXAddr)
+    f[o..'b'].text = readFloat(mapParentZAddr)
+    f[o..'c'].text = readFloat(mapParentYAddr)
+
+    o="p2"
+    f[o].caption ="Origin off"
+    f[o..'a'].text = readFloat(offOrgXAddr)
+    f[o..'b'].text = readFloat(offOrgZAddr)
+    f[o..'c'].text = ""
+
+    o="p3"
+    f[o].caption ="Origin map"
+    f[o..'a'].text = readFloat(mapParentXAddr)+readFloat(offOrgXAddr)
+    f[o..'b'].text = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)
+    f[o..'c'].text = ""
+
     
-    f.e_hmdX.text = posX
-    f.e_hmdZ.text = posZ
-    f.e_hmdY.text = posY
-    f.e_cenX.text = posXrst
-    f.e_cenZ.text = posZrst
-    f.e_cenY.text = posYrst
-    f.e_dtX.text = dtX
-    f.e_dtZ.text = dtZ
-    f.e_dtY.text = dtY
-    f.e_mapX.text = mapPosX
-    f.e_mapZ.text = mapPosZ
-    f.e_mapY.text = mapPosY
-    f.e_relX.text = mapRelX
-    f.e_relZ.text = mapRelZ
-    f.e_relY.text = mapRelY
-    f.e_chaX.text = mapChaX
-    f.e_chaZ.text = mapChaZ
-    f.e_chaY.text = mapChaY
-    mapCamX = readFloat(mapCamXAddr)
-    mapCamZ = readFloat(mapCamZAddr)
-    mapCamY = readFloat(mapCamYAddr)
+    o="p4"
+    f[o].caption ="Cam map"
+    f[o..'a'].text = readFloat(mapCamXAddr)
+    f[o..'b'].text = readFloat(mapCamZAddr)
+    f[o..'c'].text = readFloat(mapCamYAddr)
 
--- Orientation -
-    f.e_hmdQy.text = readDouble(rotQyAddr)
-    f.e_hmdQw.text = readDouble(rotQwAddr)
-    if (eular == nil) then
-        eular=getEular()
+    if (readFloat(mapChaXAddr)~=nil) then
+    o="p5"
+    f[o].caption ="Cha diff"
+    f[o..'a'].text = readFloat(mapParentXAddr)+readFloat(offOrgXAddr)-readFloat(mapChaXAddr)
+    f[o..'b'].text = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)-readFloat(mapChaZAddr)
+    f[o..'c'].text = readFloat(mapParentYAddr)-readFloat(basePosYAddr)*worldScale-readFloat(mapChaYAddr)
     end
-    local e=getEular()
-    local eRst=getEularRst()
-    if (e.y ~= nil) then
-        f.e_hmdAngle.text = e.y
-        f.e_hmdAngleRst.text = eRst.y
-    end
-    --msg = msg..nl.."Angle X:"..e.x.." ,Y:"..e.y.." ,Z:"..e.z.." ,Fac Sel:"..anaFactorSel..", Move:"..anaMoveFactor..", Rotate:"..anaRotateFactor
 
-    f.e_t1.text = ""
-    f.e_t2.caption = "Speed"
-    f.e_t2.text = anaFactorSel
+    o="p6"
+    f[o].caption ="RbasePos *ws"
+    local r=vectorRotate2D(readFloat(basePosXAddr), readFloat(basePosZAddr), e.y)
+    f[o..'a'].text = r.x *worldScale
+    f[o..'b'].text = r.z *worldScale
+    f[o..'c'].text = ""
 
+    o="p7"
+    f[o].caption ="basePos *ws"
+    f[o..'a'].text = readFloat(basePosXAddr)*worldScale
+    f[o..'b'].text = readFloat(basePosZAddr)*worldScale
+    f[o..'c'].text = readFloat(basePosYAddr)*worldScale
 
-    -- calc --
-    f.b_cal1.caption ="Rel/Dt"
-    f.e_cal1a.text = (mapRelX+35.57421875)/dtX
-    f.e_cal1b.text = (mapRelZ-38.003841400146)/dtZ
-    f.e_cal1c.text = (mapRelY+49.963916778564)/dtY
-    f.b_cal2.caption ="Rel/pos"
-    f.e_cal2a.text = mapRelX/posX
-    f.e_cal2b.text = mapRelZ/posZ
-    f.e_cal2c.text = mapRelY/posY
-    -- cal 3 --
-    f.b_cal3.caption ="Adv"
-    --f.e_cal3a.text = (mapRelX+35.57421875)
-    --f.e_cal3b.text = (mapRelZ-38.003841400146)
-    --f.e_cal3c.text = (mapRelY+49.963916778564)
-
-    -- cal 4 --
-    f.b_cal4.caption ="pos off "
-    f.e_cal4a.text = readFloat(mapOffXAddr)
-    f.e_cal4b.text = readFloat(mapOffZAddr)
-    f.e_cal4c.text = ""
-
-    -- cal 5 --
-    f.b_cal5.caption ="cha DIst"
-    f.e_cal5a.text = mapCamX - mapChaX
-    f.e_cal5b.text = mapCamZ - mapChaZ
-    f.e_cal5c.text = mapCamY - mapChaY
-
-    -- cal 6 --
-    f.b_cal6.caption ="origin"
-    f.e_cal6a.text = mapCamX-posX*worldScale
-    f.e_cal6b.text = mapCamZ-posZ*worldScale
-    f.e_cal6c.text = readFloat(baseZAddr)
-        
+    
 end
 -- Follow mode: Compare camera Relative to match character's Relative
 -- newRelative = new Delta OvrPos *worldScale + origin Fix
@@ -646,7 +752,6 @@ getAutoAttachList().add(PROCESS_NAME)
 t2_interval = 10 -- input timer
 
 autoStart=true
-camControlEnabled=true
 -- Control Style
 -- 1: CS style: Left hand walk/strafe, right hand turn/elev
 -- 2: Racing style: Left hand turn/elev, right hand drift/gas
@@ -654,19 +759,43 @@ camControlEnabled=true
 controlStyle =1
 anaSensitivityExp = 1/3
 anaFactorSel = 2 -- move/rotate speed
-anaMoveFactors = {0.05, 0.15, 5}
-anaRotateFactors = {2, 3, 5}
+anaMoveFactors = {0.001, 0.005, 0.01, 0.1, 1}
+anaRotateFactors = {2, 2, 2, 3, 5}
 anaDeadZone = 3000
 vibDuration = 0.2 --secs
 worldScale = 3600
-camControlModeNames={"Free Cam", "Follow Cam"}
-CAM_CTRL_MODE_FREE=1
-CAM_CTRL_MODE_FOLLOW=2
-camControlMode = CAM_CTRL_MODE_FREE
+camModeNames={"None", "Free Cam", "Follow Cam"}
+CAM_MODE_NONE=1
+CAM_MODE_FREE=2
+CAM_MODE_FOLLOW=3
+camMode = CAM_MODE_NONE
+-- Position fix
+followCamOriginFix = {}
+followCamOriginFix.x = 0 -- Monitor displays left eye position, check in monitor 
+followCamOriginFix.z = 0
+-- Remember the offset, deal with the view calibaration rests the baseOffset values
+followCamOffsetDef={}
+followCamOffsetDef.x=0
+followCamOffsetDef.z=2000
+followCamOffsetDef.y=1000
+followCamResetDistanceXZ = 6000
+followCamResetHeight = 2000
+-- Game view reset will clear all base data
+-- Remember them will be useful if we don't want reset view changes current position
+mBasePos={}
+mBasePos.x=0
+mBasePos.z=0
+mBasePos.y=0
+mBaseRot={}
+mBaseRot.x=0
+mBaseRot.z=0
+mBaseRot.y=0
+mBaseRot.w=1
 ---
 xbc = nil
 sec = 0
-eular={}
+eularBase={}
+eularOvr={}
 xbcButtonStat={}
 anaMoveFactor = anaMoveFactors[anaFactorSel]
 anaRotateFactor = anaRotateFactors[anaFactorSel]
@@ -676,24 +805,23 @@ nl="\r\n"
 --
 
 
-print("Press F3 to Start, F4 to stop")
 -- Y=up, Z=front
 -- Angle: forward=0, clockwise
 -- Memory Address --
 -- LibOVR
-posXAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +660"
-posYAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +668"
-posZAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +670"
-rotQyAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +648" -- View rotation (both Monitor and HMD)
-rotQwAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +658"
-rotQyHMDAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +680" -- HMD Rotation
-rotQwHMDAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +690"
-posXRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5f0"
-posYRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5f8"
-posZRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +600"
-rotQyRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +5d8" -- Forward direction (only affected by reset view)
-rotQwRstAddr = "[\"LibOVRRT64_1.dll\" + 0030A060] +620"
-currHeadposXAdrr="[\"LibOVRRT64_1.dll\" + 0030A060] +720"
+posXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+660"
+posYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+668"
+posZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+670"
+rotQyAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+648" -- View rotation (both Monitor and HMD)
+rotQwAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+658"
+rotQyHMDAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+680" -- HMD Rotation
+rotQwHMDAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+690"
+posXRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5f0"
+posYRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5f8"
+posZRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+600"
+rotQyRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5d8" -- Forward direction (only affected by reset view)
+rotQwRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+620"
+currHeadposXAdrr="[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+720"
 
 -- Map postion --
 -- the old one, not sure belongs which object
@@ -711,14 +839,16 @@ mapRelYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+
 mapChaZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A0"
 mapChaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A4"
 mapChaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
-
-
-
 -- FOculusHMD Object
 FOculusHMDObjBase= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +0"
+mapParentZAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +50"
+mapParentXAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +54"
+mapParentYAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +58"
+
 FOculusHMDObjSettingsBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+0"
 -- All floats
--- PositionOffset: Offset distance to HMD Origin,
+-- PositionOffset (offOrg): 
+--                 Offset distance to HMD Origin,
 --                 The coodinate system is alway the same with Map, not effected by rotation.
 --                 The scale is also the same with the Map. (but counting from HMD Origin.)
 --                 This changes the HMD position, and also the rotation center of the 'BaseOrientation'
@@ -741,19 +871,28 @@ baseRotZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+80
 baseRotXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+84"
 baseRotYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+88"
 baseRotWAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+8C"
-mapOffZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D0"
-mapOffXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D4"
+-- Camera origin offset to the parent
+offOrgZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D0"
+offOrgXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D4"
 
+FOculusHMDObjFrameBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+B8]+0"
+WorldToMetersScaleWhileInFrameAddr= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+B8]+B8"
 
---print(readFloat(0x1eca16d3084))
---print(readFloat(0x1eca16d3094))
+-- Cheat tables --
+mrXinputAxisBlock=getAddressList().getMemoryRecordByDescription('Xinput Axis Block')
+mrHealth=getAddressList().getMemoryRecordByDescription('Health AA')
+mrSP=getAddressList().getMemoryRecordByDescription('SP timer AA')
+
+-- dev settings--
+switchCamMode(CAM_MODE_FREE)
+mrHealth.Active=true
+mrSP.Active=true
 
 f=UDF1
 f.show()
-infoUpdate()
+print("Press ScrLk to Start, Pause to stop")
 
 --t1=createTimer(getMainForm(), true) --message output
---t2=createTimer(getMainForm(), true) -- fast timer
 t1=createTimer(f, true) --message output
 t2=createTimer(f, true) -- fast timer
 t3=createTimer(f, true) -- form update
@@ -761,11 +900,13 @@ timer_setInterval(t1, 1000)
 timer_onTimer(t1, timer1_tick)
 timer_setInterval(t2, t2_interval)
 timer_onTimer(t2, timer2_tick)
-timer_setInterval(t3, 1000)
+timer_setInterval(t3, 100)
 timer_onTimer(t3, timer3_tick)
 createHotkey(pressStart, VK_SCROLL)
 createHotkey(pressStop, VK_PAUSE)
 print("------")
+updateUI()
+updateDebugData()
 
 
 
