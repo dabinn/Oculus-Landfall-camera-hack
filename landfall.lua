@@ -85,6 +85,10 @@ function getEularBase()
     local eular=quatToEular(newQ(mBaseRot.x ,mBaseRot.y, mBaseRot.z, mBaseRot.w))
     return eular
 end
+function getEularParent()
+    local eular=quatToEular(newQ(readFloat(mapParentRotXAddr), readFloat(mapParentRotYAddr), readFloat(mapParentRotZAddr), readFloat(mapParentRotWAddr)))
+    return eular
+end
 
 -- Calculate angles of libOVR --
 function getEularOvr()
@@ -114,6 +118,10 @@ function vectorRotate2D(x, z, angle)
     d.x = x*cos(rad)-z*sin(rad)
     d.z = x*sin(rad)+z*cos(rad)
     return d
+end
+
+function rotateWithParentY(inAngle)
+    return (inAngle-eularParent.y)%360
 end
 
 -- Convert liner to exp curve
@@ -167,7 +175,6 @@ function anaAdvTransfrom(anaValX, anaValZ, anaValY, anaValRY)
         anaAdvRotate(anaPercentRY*anaRotateFactor*followCamModeRotateFactor)
     end
 end
-followCamModeRotateFactor=0.5
 
 -- Old method using LibOVR
 -- XZY Movement: Left/Right, Forward/Back, Up/Down
@@ -200,13 +207,8 @@ function anaAdvMovePlane(moveX, moveZ)
         -- Map corrdinate always changed by reseting the view
         -- The orign offset is the same with Map coordinate
         -- Just Need to calculate vectors from the base angle
-        local d=vectorRotate2D(moveX, moveZ, eularBase.y)
-        f.t1.caption = "move"
-        f.t1a.text = string.format( "%.8f",moveX)
-        f.t1b.text = string.format( "%.8f",moveZ)
-        f.t2.caption = "rMove"
-        f.t2a.text = string.format( "%.8f",d.x)
-        f.t2b.text = string.format( "%.8f",d.z)      
+        local angle=rotateWithParentY(eularBase.y)
+        local d=vectorRotate2D(moveX, moveZ, angle)
         -- changes Offset Origin to move
         local targetX, targetZ
         targetX = readFloat(offOrgXAddr) + d.x *worldScale
@@ -235,8 +237,6 @@ end
 function anaAdvMoveElev(move)
     -- Word Y: up+, down-
     if (move == 0) then return end
-    o="t1"
-    f[o..'c'].text = string.format( "%.8f",move)
     mBasePos.y=mBasePos.y-move
     writeFloat(basePosYAddr, mBasePos.y)
 end
@@ -298,6 +298,10 @@ function followCharacter()
     local mapChaZ=readFloat(mapChaZAddr)
     local mapChaX=readFloat(mapChaXAddr)
     local mapChaY=readFloat(mapChaYAddr)
+    if (mapChaZ == nil) then
+        switchCamMode(CAM_MODE_FREE)
+        return
+    end
     -- move offset origin to charatoer location
     local newOffOrgX=mapChaX-readFloat(mapParentXAddr)+followCamOriginFix.x
     local newOffOrgZ=mapChaZ-readFloat(mapParentZAddr)+followCamOriginFix.z
@@ -320,7 +324,8 @@ function followCamAcitve()
     d.z = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)-readFloat(mapChaZAddr)
     d.y = readFloat(mapParentYAddr)-mBasePos.y*worldScale-readFloat(mapChaYAddr)
     if (not followCamReset) then
-        local r=vectorRotate2D(d.x, d.z, -eularBase.y)
+        local angle=rotateWithParentY(eularBase.y)
+        local r=vectorRotate2D(d.x, d.z, -angle)
         --print("followCAM switch: d.x:"..d.x..", d.z:"..d.z..", r.x:"..r.x..", r.z"..r.z)
         mBasePos.x =  -r.x/worldScale
         mBasePos.z =  -r.z/worldScale
@@ -349,7 +354,8 @@ function followCamDeactive()
     local d={}
     d.x=mBasePos.x
     d.z=mBasePos.z
-    local r=vectorRotate2D(d.x, d.z, eularBase.y)
+    local angle=rotateWithParentY(eularBase.y)
+    local r=vectorRotate2D(d.x, d.z, angle)
     local newOffOrgX=readFloat(offOrgXAddr)-followCamOriginFix.x-r.x*worldScale
     local newOffOrgZ=readFloat(offOrgZAddr)-followCamOriginFix.z-r.z*worldScale
     --print("deactive: dx:"..d.x..", dz:"..d.z..", rx:"..r.x..", .z"..r.z)
@@ -382,15 +388,19 @@ function switchCamMode(newMode)
             freeCamActive()
         end
     elseif (newMode==CAM_MODE_FOLLOW) then
-        if (camMode==CAM_MODE_FREE) then
-            freeCamDeactive()
-            followCamAcitve()
-        elseif (camMode == CAM_MODE_FOLLOW and (not followCamReset)) then
-            newMode=CAM_MODE_NONE
-            followCamDeactive()
+        if (readFloat(mapChaXAddr) == nil) then
+            newMode=camMode --don't switch if no character
         else
-            followCamAcitve()
-        end 
+            if (camMode==CAM_MODE_FREE) then
+                freeCamDeactive()
+                followCamAcitve()
+            elseif (camMode == CAM_MODE_FOLLOW and (not followCamReset)) then
+                newMode=CAM_MODE_NONE
+                followCamDeactive()
+            else
+                followCamAcitve()
+            end 
+        end
     else
         if (camMode==CAM_MODE_FREE) then
             freeCamActive()
@@ -583,6 +593,7 @@ function timerStart()
     timer_setEnabled(t1,true)
     timer_setEnabled(t2,true)
     timer_setEnabled(t3,true)
+    timer_setEnabled(t4,true)
     print("Started")
 end
 
@@ -590,9 +601,11 @@ function timerStop()
     timer_setEnabled(t1,false)
     timer_setEnabled(t2,false)
     timer_setEnabled(t3,false)
+    timer_setEnabled(t4,false)
     --t1.destroy()
     --t2.destroy()
     --t3.destroy()
+    --t4.destroy()
     print("Stopped")
 end
 function timer1_tick(timer)  -- 1 second timer
@@ -608,15 +621,36 @@ function timer2_tick(timer)  --fastest timer
         timer.destroy()
     end
 end
-function timer3_tick(timer) -- a little fast timer
-    worldScale=getWorldScale()
-    setSpeed()
+function timer3_tick(timer) -- 0.1 second timer
     updateUI()
     if DoneState == true then
         timer.destroy()
     end
 end
+function timer4_tick(timer) -- 0.5 second timer
+    worldScale=getWorldScale()
+    eularParent=getEularParent()
+    setSpeed()
+    cheatUpdate()
+    if DoneState == true then
+        timer.destroy()
+    end
+end
 
+
+
+function cheatUpdate()
+    if (readFloat(cheatHealthAddr) == nil) then
+        return
+    end
+    cheatUpdateNum("Health", "Float", 3000)
+    --cheatUpdateNum("SPTimer", "Float", -200)
+    cheatUpdateNum("Grenade", "Bytes", 3)
+end
+function cheatUpdateNum(cheatName, type, value) 
+    local addr="cheat"..cheatName.."Addr"
+    _G["write"..type](_G[addr], value)
+end
 function FormClose(sender)
     timerStop()
     return caHide --Possible options: caHide, caFree, caMinimize, caNone
@@ -663,7 +697,6 @@ function checkMapIsReady()
 end
 
 function updateUI()
-    local o
     f.b_speed.caption = "Speed: "..anaFactorSel.." / "..#anaMoveFactors.." ("..anaMoveFactor.." )"
 
     -- Toggles --
@@ -696,7 +729,8 @@ function updateDebugData()
     end
 
 
-    local e=getEularBase()
+    local e=eularBase
+    local ep=eularParent
 
     o="o1"
     f[o].caption = "Qw"
@@ -713,6 +747,11 @@ function updateDebugData()
     f[o..'a'].text = e.x
     f[o..'b'].text = e.z
     f[o..'c'].text = e.y
+    o="o4"
+    f[o].caption = "pAngle"
+    f[o..'a'].text = ep.x
+    f[o..'b'].text = ep.z
+    f[o..'c'].text = ep.y
 
     o="p1"
     f[o].caption ="Parent"
@@ -808,14 +847,17 @@ controlStyle =1
 anaSensitivityExp = 1/3
 -- move/rotate speed
 anaFactorSel = 2
-anaMoveFactors = {0.002, 0.005, 0.0125, 0.033, 0.1}
-anaRotateFactors = {0.5, 0.8, 1.2, 2, 3}
+anaMoveFactors = {0.002, 0.006, 0.018, 0.054, 0.152}
+anaRotateFactors = {0.8, 1.2, 1.8, 2.5, 3}
+anaMoveFactor=0
+anaRotateFactor=0
 -- move/rotate speed in hanger
-anaMoveFactorsHanger = {0.01, 0.05, 0.25, 1.25, 10}
+anaMoveFactorsHanger = {0.01, 0.03, 0.2, 1.2, 10}
 anaRotateFactorsHanger = {1, 2, 3, 4, 5}
+followCamModeRotateFactor=1
 anaDeadZone = 3000
 vibDuration = 0.2 --secs
-worldScale = 3600
+worldScale = 100
 camModeNames={"None", "Free Cam", "Follow Cam"}
 CAM_MODE_NONE=1
 CAM_MODE_FREE=2
@@ -829,8 +871,8 @@ followCamOriginFix.x = 0 -- Monitor displays left eye position, check in monitor
 followCamOriginFix.z = 0
 -- Default follow cam distance
 followCamReset=false
-followCamResetDistanceXZ = 1000
-followCamResetHeight = 1000
+followCamResetDistanceXZ = 1800
+followCamResetHeight = 1800
 -- Game view reset will clear all base data
 -- Remember them will be useful if we don't want reset view changes current position
 mBasePos={}
@@ -845,8 +887,9 @@ mBaseRot.w=1
 ---
 xbc = nil
 sec = 0
-eularBase={}
-eularOvr={}
+eularBase = {["x"]=0,["y"]=0,["z"]=0}
+eularParent={["x"]=0,["y"]=0,["z"]=0}
+eularOvr =  {["x"]=0,["y"]=0,["z"]=0}
 xbcButtonStat={}
 vibStart = 0 -- os.clock time
 --
@@ -890,6 +933,10 @@ mapChaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8]
 mapChaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
 -- FOculusHMD Object
 FOculusHMDObjBase= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +0"
+mapParentRotZAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +40"
+mapParentRotXAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +44"
+mapParentRotYAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +48"
+mapParentRotWAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +4C"
 mapParentZAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +50"
 mapParentXAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +54"
 mapParentYAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +58"
@@ -927,6 +974,12 @@ offOrgXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D4"
 FOculusHMDObjFrameBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+B8]+0"
 WorldToMetersScaleWhileInFrameAddr= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+B8]+B8"
 
+
+-- Cheat ptrs --
+cheatHealthAddr =  "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+7C8]+178"
+cheatSPTimerAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+2C0]+1F0]+F8"
+cheatGrenadeAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+150]+AE1"
+
 -- Cheat tables --
 mrXinputAxisBlock=getAddressList().getMemoryRecordByDescription('Xinput Axis Block')
 mrHealth=getAddressList().getMemoryRecordByDescription('Health AA')
@@ -934,23 +987,24 @@ mrSP=getAddressList().getMemoryRecordByDescription('SP timer AA')
 
 -- dev settings--
 switchCamMode(CAM_MODE_FREE)
-mrHealth.Active=true
+--mrHealth.Active=true
 mrSP.Active=true
 
-
-
+createHotkey(pressStart, VK_SCROLL)
+createHotkey(pressStop, VK_PAUSE)
 --t1=createTimer(getMainForm(), true) --message output
 t1=createTimer(f, true) --message output
 t2=createTimer(f, true) -- fast timer
 t3=createTimer(f, true) -- form update
+t4=createTimer(f, true) -- cheat value update
 timer_setInterval(t1, 1000)
 timer_onTimer(t1, timer1_tick)
 timer_setInterval(t2, t2_interval)
 timer_onTimer(t2, timer2_tick)
 timer_setInterval(t3, 100)
 timer_onTimer(t3, timer3_tick)
-createHotkey(pressStart, VK_SCROLL)
-createHotkey(pressStop, VK_PAUSE)
+timer_setInterval(t4, 500)
+timer_onTimer(t4, timer4_tick)
 print("------")
 updateUI()
 updateDebugData()
