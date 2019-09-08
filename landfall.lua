@@ -331,7 +331,7 @@ function followCamAcitve()
         writeFloat(basePosXAddr, mBasePos.x)
         writeFloat(basePosZAddr, mBasePos.z)
     else
-        print("followCAM reset")
+        --print("followCAM reset")
         -- When cam position is too far
         -- Reset followCAM to default distance
         mBasePos.x =  0/worldScale
@@ -367,11 +367,9 @@ function followCamDeactive()
     writeFloat(basePosZAddr, mBasePos.z)
 end
 function freeCamActive()
-    print("4444")
     xinputBlockToggle(true)
 end
 function freeCamDeactive()
-    print("3333")    
     xinputBlockToggle(false)
 end
 
@@ -408,7 +406,6 @@ function switchCamMode(newMode)
         end
     else
         if (camMode==CAM_MODE_FREE) then
-            print("2222")
             freeCamActive()
         elseif (camMode == CAM_MODE_FOLLOW) then
             followCamAcitve()
@@ -501,14 +498,14 @@ function xbcCheckButtons()
             -- button pressed
             -- Register a botton state
             if (xbcButtonStat[btn]==nil or xbcButtonStat[btn]==0) then
-                print("> "..btn.." DOWN")
+                --print("> "..btn.." DOWN")
                 xbcButtonStat[btn]=1
             else
                 --button hold
                 if (xbcButtonStat[btn] ~= -1) then
                     xbcButtonStat[btn]=xbcButtonStat[btn]+1
                     if (xbcButtonStat[btn] >= buttonHoldThreshold) then
-                        print("> "..btn.." HOLD")
+                        --print("> "..btn.." HOLD")
                         xbcButtonStat[btn]=-1
                         -- Call button function if exist
                         local btnFuncName= "on_"..btn.."_hold"
@@ -528,7 +525,7 @@ function xbcCheckButtons()
             -- BTN released, do something
             if (xbcButtonStat[btn] and xbcButtonStat[btn]>0) then
                 -- UnRegister a botton state
-                print("> "..btn.." UP")
+                --print("> "..btn.." UP")
 
                 -- Call button function if exist
                 local btnFuncName= "on_"..btn.."_released"
@@ -677,24 +674,6 @@ function cheatUpdateNum(cheatName, type, value)
 end
 
 
-function initUI()
-    f.caption = hackName.." ( v"..version.." )"
-    f.enHack.checked=enHack
-    f.enCheat.checked=enCheat
-    f.enDebug.checked=enDebug
-    if (not enDebug) then
-        f.enDebug.visible=false
-    end
-    debugToggle(enDebug)
-end
-function resetUI()
-    status.gameExe = false
-    status.scence = false
-    status.xbc = false
-    status.character = false
-    updateUI()
-end
-
 function initHotkey()
     if (enDebug) then
         createHotkey(hackStart, VK_SCROLL)
@@ -776,7 +755,29 @@ function checkGameReady()
     return status.gameExe and checkSceneReady()
 end
 function checkGameExe()
-    status.gameExe=true
+    if (not enHack) then
+        status.gameExe=false
+        return status.gameExe
+    end
+
+    -- getProcessIDFromProcessName(PROCESS_NAME) causes high CPU loading
+    -- Check game scence first
+    if (checkSceneReady()) then -- Process already opened, no need to check process id
+        status.gameExe=true
+    else
+        gameExeDectectionSec=gameExeDectectionSec+1
+        if (gameExeDectectionSec>=3*1000/500) then --slowdown the check interval when game not running
+            gameExeDectectionSec=0
+            if (getProcessIDFromProcessName(PROCESS_NAME) ~= nil) then
+                if (not status.gameExe) then
+                    openProcess(PROCESS_NAME)
+                    status.gameExe=true
+                end
+            else
+                status.gameExe=false
+            end
+        end
+    end
     return status.gameExe
 end
 function checkSceneReady()
@@ -807,6 +808,22 @@ function updateStatus()
     status.xbc = checkXbcReady()
     status.character = checkCharacterReady()
 end
+function initUI()
+    f.caption = hackName.." ( v"..version.." )"
+    f.enHack.checked=enHack
+    f.enCheat.checked=enCheat
+    f.enDebug.checked=enDebug
+    f.enDebug.visible=enDebug
+    debugToggle(enDebug)
+end
+
+function resetUI()
+    status.gameExe = false
+    status.scence = false
+    status.xbc = false
+    status.character = false
+    updateUI()
+end
 
 function updateUI()
     -- Status
@@ -823,6 +840,11 @@ function updateUI()
         end
     end
     f.statusCharacter.checked=status.character
+    if (not status.character) then
+        f.statusCharacter.caption="No Character"
+    else
+        f.statusCharacter.caption="Character"
+    end
     -- Info
     f.infoCamMode.text = camModeNames[camMode]
     f.infoSpeed.text = "Speed: "..anaFactorSel.." / "..#anaMoveFactors --.." ("..anaMoveFactor.." )"
@@ -831,7 +853,7 @@ end
 
 function updateDebugData()
     local o
-    if (not enDebug) and (not checkGameReady()) then return end
+    if (not enDebug) or (not checkGameReady()) then return end
 
     local e=eularBase
     local ep=eularParent
@@ -979,7 +1001,7 @@ followCamResetHeight = 1800
 -- enable/disable --
 enHack = true
 enCheat = false
-enDebug = false
+enDebug = true
 -- software info
 hackName= "Landfall Camera hack"
 version = "1.0"
@@ -1000,6 +1022,7 @@ worldScale = 100
 followCamReset=false
 vibStart = 0 -- os.clock time
 timerRunning = false
+gameExeDectectionSec=0
 
 -- Game view reset will clear all base data
 -- Remember them will be useful if we don't want reset view changes current position
@@ -1102,8 +1125,6 @@ cheatGrenadeAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]
 mrXinputAxisBlock=getAddressList().getMemoryRecordByDescription('Xinput Axis Block')
 mrHealth=getAddressList().getMemoryRecordByDescription('Health AA')
 mrSP=getAddressList().getMemoryRecordByDescription('SP timer AA')
-
-getAutoAttachList().add(PROCESS_NAME)
 
 initHotkey()
 initUI()
