@@ -541,17 +541,13 @@ end
 
 -- Timer updates --
 function xbcGetState()
-    -- check Game Ready --
-    if(not checkGameReady()) then
-        return
-    end
-
     -- Read Xbox Controller state
     xbc = getXBox360ControllerState();
-    if (not checkXbcReady()) then
+    if (not (checkXbcReady() or checkGameReady())) then
        return
     end
 
+   
     -- stop vibration --
     if (vibStart>0) and (os.clock()-vibStart > vibDuration) then
         vibStart=0
@@ -609,7 +605,7 @@ end
 function updataHackButtonCaption()
     local str
     if (enHack) then
-        if (checkSceneReady()) then
+        if (status.gameExe) then
             str="Running"
         else
             str="Waiting"
@@ -782,10 +778,10 @@ function checkGameExe()
         if (gameExeDectectionSec>=3*1000/500) then --slowdown the check interval when game not running
             gameExeDectectionSec=0
             if (getProcessIDFromProcessName(PROCESS_NAME) ~= nil) then
-                if (not status.gameExe) then
+                if (not status.gameExe) then -- prevent process opened but scence not loaded yet
                     openProcess(PROCESS_NAME)
-                    status.gameExe=true
                 end
+                status.gameExe=true
             else
                 status.gameExe=false
             end
@@ -969,7 +965,7 @@ math.deg2Rad = math.pi / 180
 math.rad2Deg = 180 / math.pi
 nl="\r\n"
 f=UDF1
-camModeNames={"Defaul Camera", "Free Camera", "Follow Camera"}
+camModeNames={"Default Camera", "Free Camera", "Follow Camera"}
 CAM_MODE_NONE=1
 CAM_MODE_FREE=2
 CAM_MODE_FOLLOW=3
