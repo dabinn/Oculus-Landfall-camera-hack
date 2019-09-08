@@ -106,7 +106,6 @@ function getWorldScale()
     if (ws == nil) then
        ws = worldScale
     end
-    f.b_scale.caption="Scale: "..ws
     return ws
 end
 
@@ -131,7 +130,7 @@ function expPercent(percentage, exp)
 end
 
 function anaPercent(anaVal)
-    if (xbc==nil or math.abs(anaVal) < anaDeadZone) then
+    if ((not checkXbcReady()) or math.abs(anaVal) < anaDeadZone) then
         return 0
     end
     -- anaVal=-32767~0~+32767
@@ -299,7 +298,7 @@ function followCharacter()
     local mapChaX=readFloat(mapChaXAddr)
     local mapChaY=readFloat(mapChaYAddr)
     if (mapChaZ == nil) then
-        switchCamMode(CAM_MODE_FREE)
+        resetCamMode()
         return
     end
     -- move offset origin to charatoer location
@@ -368,13 +367,19 @@ function followCamDeactive()
     writeFloat(basePosZAddr, mBasePos.z)
 end
 function freeCamActive()
-    mrXinputAxisBlock.Active=true
+    print("4444")
+    xinputBlockToggle(true)
 end
 function freeCamDeactive()
-    mrXinputAxisBlock.Active=false
+    print("3333")    
+    xinputBlockToggle(false)
 end
+
 function switchCamMode(newMode)
-    worldScale=getWorldScale()
+    if (not checkGameReady()) then
+        return
+    end
+    updateWorldData()
     eularBase=getEularBase()
     if (newMode==CAM_MODE_FREE) then
         -- check last mode
@@ -388,7 +393,7 @@ function switchCamMode(newMode)
             freeCamActive()
         end
     elseif (newMode==CAM_MODE_FOLLOW) then
-        if (readFloat(mapChaXAddr) == nil) then
+        if (not checkCharacterReady()) then
             newMode=camMode --don't switch if no character
         else
             if (camMode==CAM_MODE_FREE) then
@@ -403,6 +408,7 @@ function switchCamMode(newMode)
         end
     else
         if (camMode==CAM_MODE_FREE) then
+            print("2222")
             freeCamActive()
         elseif (camMode == CAM_MODE_FOLLOW) then
             followCamAcitve()
@@ -412,7 +418,7 @@ function switchCamMode(newMode)
     camMode=newMode
 end
 
-function gameResetView()
+function resetCamMode()
     -- Reset position when the game excuting Re-calibrate
     writeFloat(offOrgXAddr, 0)
     writeFloat(offOrgZAddr, 0)
@@ -423,9 +429,10 @@ function gameResetView()
     mBaseRot.z=0
     mBaseRot.y=0
     mBaseRot.w=1
-    if (camMode==CAM_MODE_FOLLOW) then
-        camMode=CAM_MODE_FREE
+    if (camMode==CAM_MODE_FREE) then
+        freeCamDeactive()
     end
+    camMode=CAM_MODE_NONE
 end
 
 function setSpeed()
@@ -471,7 +478,7 @@ end
 function on_GAMEPAD_DPAD_RIGHT_released(btn)
 end
 function on_GAMEPAD_BACK_released(btn)
-    gameResetView()
+    resetCamMode()
 end
 function on_GAMEPAD_LEFT_THUMB_released(btn)
     switchCamMode(CAM_MODE_FOLLOW)
@@ -538,17 +545,13 @@ end
 -- Timer updates --
 function xbcGetState()
     -- check Game Ready --
-    if(not checkGameIsReady()) then
+    if(not checkGameReady()) then
         return
-    end
-
-    if (camMode==CAM_MODE_FOLLOW) then
-        followCharacter()
     end
 
     -- Read Xbox Controller state
     xbc = getXBox360ControllerState();
-    if (xbc==nil) then
+    if (not checkXbcReady()) then
        return
     end
 
@@ -579,155 +582,256 @@ function xbcGetState()
     end
 end
 
-function pressStart()
-    timerStart()
+function uiEnHackClicked(sender)
+    hackToggle(sender.checked)
 end
-function pressStop()
-    timerStop()
-    mrXinputAxisBlock.Active=false
-    mrHealth.Active=false
-    mrSP.Active=false
+function uiEnCheatClicked(sender)
+    cheatToggle(sender.checked)
+end
+function uiEnHelpClicked(sender)
+    helpToggle(sender.checked)
+end
+function uiEnDebugClicked(sender)
+    debugToggle(sender.checked)
+end
+function uiFormClose(sender)
+    hackStop()
+    return caHide --Possible options: caHide, caFree, caMinimize, caNone
 end
 
-function timerStart()
-    timer_setEnabled(t1,true)
-    timer_setEnabled(t2,true)
-    timer_setEnabled(t3,true)
-    timer_setEnabled(t4,true)
-    print("Started")
-end
-
-function timerStop()
-    timer_setEnabled(t1,false)
-    timer_setEnabled(t2,false)
-    timer_setEnabled(t3,false)
-    timer_setEnabled(t4,false)
-    --t1.destroy()
-    --t2.destroy()
-    --t3.destroy()
-    --t4.destroy()
-    print("Stopped")
-end
-function timer1_tick(timer)  -- 1 second timer
-    --debugDisp()
-    updateDebugData()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
-function timer2_tick(timer)  --fastest timer
-    xbcGetState()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
-function timer3_tick(timer) -- 0.1 second timer
-    updateUI()
-    if DoneState == true then
-        timer.destroy()
-    end
-end
-function timer4_tick(timer) -- 0.5 second timer
-    worldScale=getWorldScale()
-    eularParent=getEularParent()
-    setSpeed()
-    cheatUpdate()
-    if DoneState == true then
-        timer.destroy()
+function hackToggle(en)
+    enHack=en
+    if (en) then
+        f.enHack.caption="Running"
+        hackStart()
+    else
+        f.enHack.caption="Suspended"
+        hackStop()
     end
 end
 
+function uiToggle(mode)
+    if (mode=="help") then
+        f.enDebug.checked = false
+        f.p_debugInfo.visible = false
+        f.p_help.visible = true
+        f.height = 400
+    elseif (mode=="debug") then
+        f.enHelp.checked = false
+        f.p_help.visible = false
+        f.p_debugInfo.visible = true
+        f.height = 700
+    else
+        f.height = 200
+        f.p_debugInfo.visible = false
+        f.p_help.visible = false
+    end
+end
 
+function helpToggle(en)
+    if (en) then
+        uiToggle("help")
+    else
+        uiToggle("normal")
+    end
+end
+
+function debugToggle(en)
+    enDebug=en
+    if (en) then
+        uiToggle("debug")
+    else
+        uiToggle("normal")
+    end
+end
+
+function xinputBlockToggle(en)
+    mrXinputAxisBlock.Active=en
+end
+
+function cheatToggle(en)
+    enCheat=en
+    cheatAAToggle(en)
+end
+
+function cheatAAToggle(en)
+    if (not enCheat) then
+        en=false
+    end
+    --mrHealth.Active=en
+    mrSP.Active=en
+end
 
 function cheatUpdate()
-    if (readFloat(cheatHealthAddr) == nil) then
+    if (not (enCheat and checkCheatUpdateReady())) then
         return
     end
     cheatUpdateNum("Health", "Float", 3000)
-    --cheatUpdateNum("SPTimer", "Float", -200)
-    cheatUpdateNum("Grenade", "Bytes", 3)
+    cheatUpdateNum("SPTimer", "Float", -200)
+    --cheatUpdateNum("Grenade", "Bytes", 3)
 end
+
 function cheatUpdateNum(cheatName, type, value) 
     local addr="cheat"..cheatName.."Addr"
     _G["write"..type](_G[addr], value)
 end
-function FormClose(sender)
+
+
+function initUI()
+    f.caption = hackName.." ( v"..version.." )"
+    f.enHack.checked=enHack
+    f.enCheat.checked=enCheat
+    f.enDebug.checked=enDebug
+    if (not enDebug) then
+        f.enDebug.visible=false
+    end
+    debugToggle(enDebug)
+end
+function resetUI()
+    status.gameExe = false
+    status.scence = false
+    status.xbc = false
+    status.character = false
+    updateUI()
+end
+
+function initHotkey()
+    if (enDebug) then
+        createHotkey(hackStart, VK_SCROLL)
+        createHotkey(hackStop, VK_PAUSE)
+    end
+end
+
+
+function hackStart()
+    timerStart()
+    cheatAAToggle(true)
+end
+
+function hackStop()
+    xinputBlockToggle(false)
+    cheatAAToggle(false)
     timerStop()
-    return caHide --Possible options: caHide, caFree, caMinimize, caNone
+    resetUI()
 end
 
-function debugDisp()
-    sec=sec+1
-    local msg = ""
-    local xbcMsg = ""
-    local xbcConnStr = ""
-    if (xbc==nil) then
-        xbcConnStr="NOT Connected"
-    else
-        xbcConnStr="OK"
-        -- XBC Analog Stick range: XY -32767~32767, dz range 1017~2329
-        xbcMsg =          " - LX:"..xbc.ThumbLeftX..", LY:"..xbc.ThumbLeftY
-        xbcMsg = xbcMsg..", RX:"..xbc.ThumbRightX..", RY:"..xbc.ThumbRightY
-        xbcMsg = xbcMsg..", %= LX:"..anaPercent(xbc.ThumbLeftX)
-        xbcMsg = xbcMsg..   ", LY:"..anaPercent(xbc.ThumbLeftY)
-        xbcMsg = xbcMsg..   ", RX:"..anaPercent(xbc.ThumbRightX)
-        xbcMsg = xbcMsg..   ", RY:"..anaPercent(xbc.ThumbRightY)
-    end
-    msg = "v5, sec:"..sec..", XBC:"..xbcConnStr..", Enabled: "
-    msg = msg..xbcMsg
-    if (eularOvr == nil) then
-        eularOvr=getEularOvr()
-    end
-    local e=getEularOvr()
-    msg = msg..nl.."Angle X:"..e.x.." ,Y:"..e.y.." ,Z:"..e.z.." ,Fac Sel:"..anaFactorSel..", Move:"..anaMoveFactor..", Rotate:"..anaRotateFactor
-    --print(msg)
-    --dprint()
+
+function timerStart()
+    --t1=createTimer(getMainForm(), true) --message output
+    timerRunning=true
+    t1=createTimer(f, true) --message output
+    t2=createTimer(f, true) -- fast timer
+    t3=createTimer(f, true) -- form update
+    t4=createTimer(f, true) -- cheat value update
+    timer_setInterval(t1, 1000)
+    timer_setInterval(t2, t2_interval)
+    timer_setInterval(t3, 100)
+    timer_setInterval(t4, 500)
+    timer_onTimer(t1, timer1_tick)
+    timer_onTimer(t2, timer2_tick)
+    timer_onTimer(t3, timer3_tick)
+    timer_onTimer(t4, timer4_tick)
+--    timer_setEnabled(t1,true)
+--    timer_setEnabled(t2,true)
+--    timer_setEnabled(t3,true)
+--    timer_setEnabled(t4,true)
+    print("Started")
 end
 
--- todo: check game and map ready
-function checkGameIsReady()
-    -- check Map loaded --
-    if(readDouble(posXAddr) == nil) then
-        return false
-    else
-        return true
+function timerStop()
+    timerRunning=false
+    print("Stopped")
+end
+function timer1_tick(timer)  -- 1 second timer
+    updateDebugData()
+    timerCheckDestroy(timer)
+end
+function timer2_tick(timer)  --fastest timer
+    xbcGetState()
+    if (camMode==CAM_MODE_FOLLOW) then
+        followCharacter()
+    end
+    timerCheckDestroy(timer)
+end
+function timer3_tick(timer) -- 0.1 second timer
+    updateUI()
+    timerCheckDestroy(timer)
+end
+function timer4_tick(timer) -- 0.5 second timer
+    updateStatus()
+    updateWorldData()
+    setSpeed()
+    cheatUpdate()
+    timerCheckDestroy(timer)
+end
+
+function timerCheckDestroy(timer)
+    if (not timerRunning) then
+        print("Timer "..tostring(timer).." destroyed.")
+        timer.destroy()
     end
 end
-function checkMapIsReady()
+
+function checkGameReady()
+    return status.gameExe and checkSceneReady()
+end
+function checkGameExe()
+    status.gameExe=true
+    return status.gameExe
+end
+function checkSceneReady()
+    -- check Scence loaded
+    return readDouble(basePosZAddr) ~= nil
+end
+function checkXbcReady()
+    return xbc ~= nil
+end
+function checkCharacterReady()
+    return readFloat(mapChaXAddr) ~= nil
+end
+function checkCheatUpdateReady()
+    return readFloat(cheatGrenadeAddr) ~= nil
+end
+
+function updateWorldData()
+    if(checkGameReady()) then
+        worldScale=getWorldScale()
+        eularParent=getEularParent()
+    end
+end
+
+-- slowly update status
+function updateStatus()
+    status.gameExe = checkGameExe()
+    status.scence = checkSceneReady()
+    status.xbc = checkXbcReady()
+    status.character = checkCharacterReady()
 end
 
 function updateUI()
-    f.b_speed.caption = "Speed: "..anaFactorSel.." / "..#anaMoveFactors.." ("..anaMoveFactor.." )"
-
-    -- Toggles --
-    f.t_mapReady = checkGameIsReady()
-    f.t_camControlEnabled.checked = camMode~=CAM_MODE_NONE
-    f.t_camControlEnabled.caption = camModeNames[camMode]
-    if (xbc==nil) then
-        f.t_xbcConnected.checked=false
+    -- Status
+    f.statusGameExe.checked=status.gameExe
+    f.statusXbc.checked = status.xbc
+    f.statusScene.checked=status.scence
+    if (not status.scence) then
+        f.statusScene.caption = "No Scence"
     else
-        f.t_xbcConnected.checked=true
+        if (worldScale>100) then
+            f.statusScene.caption = "Map"
+        else
+            f.statusScene.caption = "Hanger"
+        end
     end
+    f.statusCharacter.checked=status.character
+    -- Info
+    f.infoCamMode.text = camModeNames[camMode]
+    f.infoSpeed.text = "Speed: "..anaFactorSel.." / "..#anaMoveFactors --.." ("..anaMoveFactor.." )"
 end
 
 
 function updateDebugData()
     local o
-    if (xbc~=nil) then
-        -- XBC Analog Stick range: XY -32767~32767, dz range 1017~2329
-        xbcMsg =          " - LX:"..xbc.ThumbLeftX..", LY:"..xbc.ThumbLeftY
-        xbcMsg = xbcMsg..", RX:"..xbc.ThumbRightX..", RY:"..xbc.ThumbRightY
-        xbcMsg = xbcMsg..", %= LX:"..anaPercent(xbc.ThumbLeftX)
-        xbcMsg = xbcMsg..   ", LY:"..anaPercent(xbc.ThumbLeftY)
-        xbcMsg = xbcMsg..   ", RX:"..anaPercent(xbc.ThumbRightX)
-        xbcMsg = xbcMsg..   ", RY:"..anaPercent(xbc.ThumbRightY)
-    end
-
-    -- check Game Ready --
-    if(not checkGameIsReady()) then
-        return
-    end
-
+    if (not enDebug) and (not checkGameReady()) then return end
 
     local e=eularBase
     local ep=eularParent
@@ -771,19 +875,18 @@ function updateDebugData()
     f[o..'b'].text = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)
     f[o..'c'].text = ""
 
-    
     o="p4"
     f[o].caption ="Cam map"
     f[o..'a'].text = readFloat(mapCamXAddr)
     f[o..'b'].text = readFloat(mapCamZAddr)
     f[o..'c'].text = readFloat(mapCamYAddr)
 
-    if (readFloat(mapChaXAddr)~=nil) then
-    o="p5"
-    f[o].caption ="Cha diff"
-    f[o..'a'].text = readFloat(mapParentXAddr)+readFloat(offOrgXAddr)-readFloat(mapChaXAddr)
-    f[o..'b'].text = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)-readFloat(mapChaZAddr)
-    f[o..'c'].text = readFloat(mapParentYAddr)-readFloat(basePosYAddr)*worldScale-readFloat(mapChaYAddr)
+    if (checkCharacterReady()) then
+        o="p5"
+        f[o].caption ="Cha diff"
+        f[o..'a'].text = readFloat(mapParentXAddr)+readFloat(offOrgXAddr)-readFloat(mapChaXAddr)
+        f[o..'b'].text = readFloat(mapParentZAddr)+readFloat(offOrgZAddr)-readFloat(mapChaZAddr)
+        f[o..'c'].text = readFloat(mapParentYAddr)-readFloat(basePosYAddr)*worldScale-readFloat(mapChaYAddr)
     end
 
     o="p6"
@@ -791,7 +894,6 @@ function updateDebugData()
     local r=vectorRotate2D(readFloat(basePosXAddr), readFloat(basePosZAddr), e.y)
     f[o..'a'].text = r.x *worldScale
     f[o..'b'].text = r.z *worldScale
-    f[o..'c'].text = ""
 
     o="p7"
     f[o].caption ="basePos *ws"
@@ -799,6 +901,9 @@ function updateDebugData()
     f[o..'b'].text = readFloat(basePosZAddr)*worldScale
     f[o..'c'].text = readFloat(basePosYAddr)*worldScale
 
+    o="p8"
+    f[o].caption ="World Scale"
+    f[o..'a'].text = worldScale
     
 end
 -- Follow mode: Compare camera Relative to match character's Relative
@@ -820,59 +925,82 @@ function getOvrPos(currOvrPos, currRelative, newRelative)
 end
 
 
+
+-- definations --
 math.deg2Rad = math.pi / 180
 math.rad2Deg = 180 / math.pi
-
-
-PROCESS_NAME = 'LandfallClient-Win64-Shipping.exe'
-getAutoAttachList().add(PROCESS_NAME)
+nl="\r\n"
 f=UDF1
--- Parameters --
+camModeNames={"Defaul Camera", "Free Camera", "Follow Camera"}
+CAM_MODE_NONE=1
+CAM_MODE_FREE=2
+CAM_MODE_FOLLOW=3
+camMode=CAM_MODE_NONE -- Need to be defined at first time for camera switching
 
--- timer is inaccure --
---interval/10sec should triggered/ real triggered
---100ms :100  - 91
---50ms  :200  - 163
---20ms  :500  - 322
---10ms  :1000 - 637
---5ms   :2000 - 651
+
+-- Settings --
+PROCESS_NAME = 'LandfallClient-Win64-Shipping.exe'
+-- (timer is inaccure)
+-- real trigger per second:
+-- 100ms :9.1/10
+-- 50ms  :16.3/20
+-- 20ms  :32.2/50
+-- 10ms  :63.7/100
+-- 5ms   :65.1/2000
 t2_interval = 10 -- input timer
-
-autoStart=true
--- Control Style
+-- Control Style (not used now)
 -- 1: CS style: Left hand walk/strafe, right hand turn/elev
 -- 2: Racing style: Left hand turn/elev, right hand drift/gas
 -- 3: Space Fighter Style: Left hand 3D strafe, right hand turn/throttle
 controlStyle =1
-anaSensitivityExp = 1/3
 -- move/rotate speed
-anaFactorSel = 2
 anaMoveFactors = {0.002, 0.006, 0.018, 0.054, 0.152}
 anaRotateFactors = {0.8, 1.2, 1.8, 2.5, 3}
-anaMoveFactor=0
-anaRotateFactor=0
 -- move/rotate speed in hanger
 anaMoveFactorsHanger = {0.01, 0.03, 0.2, 1.2, 10}
 anaRotateFactorsHanger = {1, 2, 3, 4, 5}
+-- default speed selection
+anaFactorSel = 2
+-- follow mode rotation multiplier
 followCamModeRotateFactor=1
+-- input
+anaSensitivityExp = 1/3
 anaDeadZone = 3000
 vibDuration = 0.2 --secs
-worldScale = 100
-camModeNames={"None", "Free Cam", "Follow Cam"}
-CAM_MODE_NONE=1
-CAM_MODE_FREE=2
-CAM_MODE_FOLLOW=3
-camMode = CAM_MODE_NONE
--- hold seconds --
+-- button hold seconds --
 buttonHoldThreshold=0.3*(1000/t2_interval)
 -- Position fix
 followCamOriginFix = {}
-followCamOriginFix.x = 0 -- Monitor displays left eye position, check in monitor 
+followCamOriginFix.x = 0 -- Monitor displays left eye position, shout check this in HMD
 followCamOriginFix.z = 0
 -- Default follow cam distance
-followCamReset=false
 followCamResetDistanceXZ = 1800
 followCamResetHeight = 1800
+-- enable/disable --
+enHack = true
+enCheat = false
+enDebug = false
+-- software info
+hackName= "Landfall Camera hack"
+version = "1.0"
+
+
+
+
+
+---- Globals ----
+xbc = nil
+xbcButtonStat={}
+eularBase = {["x"]=0,["y"]=0,["z"]=0}
+eularParent={["x"]=0,["y"]=0,["z"]=0}
+eularOvr =  {["x"]=0,["y"]=0,["z"]=0}
+anaMoveFactor=0
+anaRotateFactor=0
+worldScale = 100
+followCamReset=false
+vibStart = 0 -- os.clock time
+timerRunning = false
+
 -- Game view reset will clear all base data
 -- Remember them will be useful if we don't want reset view changes current position
 mBasePos={}
@@ -884,65 +1012,14 @@ mBaseRot.x=0
 mBaseRot.z=0
 mBaseRot.y=0
 mBaseRot.w=1
----
-xbc = nil
-sec = 0
-eularBase = {["x"]=0,["y"]=0,["z"]=0}
-eularParent={["x"]=0,["y"]=0,["z"]=0}
-eularOvr =  {["x"]=0,["y"]=0,["z"]=0}
-xbcButtonStat={}
-vibStart = 0 -- os.clock time
---
-nl="\r\n"
---
+-- Non-realtime status
+status = {}
+status.gameExe = false
+status.xbc = false
+status.scence = false
+status.character = false
 
-
--- Y=up, Z=front
--- Angle: forward=0, clockwise
--- Memory Address --
--- LibOVR
-posXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+660"
-posYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+668"
-posZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+670"
-rotQyAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+648" -- View rotation (both Monitor and HMD)
-rotQwAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+658"
-rotQyHMDAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+680" -- HMD Rotation
-rotQwHMDAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+690"
-posXRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5f0"
-posYRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5f8"
-posZRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+600"
-rotQyRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5d8" -- Forward direction (only affected by reset view)
-rotQwRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+620"
-currHeadposXAdrr="[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+720"
-
--- Map postion --
--- the old one, not sure belongs which object
-mapPosZAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +0"
-mapPosXAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +4"
-mapPosYAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +8"
--- Read from CameraComponent Object
-mapCamZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A0"
-mapCamXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A4"
-mapCamYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A8"
-mapRelZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E0"
-mapRelXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E4"
-mapRelYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E8"
--- Read from Character CameraComponent Object
-mapChaZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A0"
-mapChaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A4"
-mapChaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
--- FOculusHMD Object
-FOculusHMDObjBase= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +0"
-mapParentRotZAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +40"
-mapParentRotXAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +44"
-mapParentRotYAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +48"
-mapParentRotWAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +4C"
-mapParentZAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +50"
-mapParentXAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +54"
-mapParentYAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +58"
-
-FOculusHMDObjSettingsBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+0"
--- All floats
+---- Memory Records ----
 -- PositionOffset (offOrg): 
 --                 Offset distance to HMD Origin,
 --                 The coodinate system is alway the same with Map, not effected by rotation.
@@ -960,6 +1037,48 @@ FOculusHMDObjSettingsBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+
 -- Direction
 -- BaseOffset.Z (FW- BK+) / BaseOffset.X (L+ R-) / BaseOffset.Y (Up- Dn+)
 -- BaseOrientation.Z (-CW) / BaseOrientation.X (-Dn) / BaseOrientation.Y (L+ R-) / BaseOrientation
+
+-- LibOVR
+posXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+660"
+posYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+668"
+posZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+670"
+rotQyAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+648" -- View rotation (both Monitor and HMD)
+rotQwAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+658"
+rotQyHMDAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+680" -- HMD Rotation
+rotQwHMDAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+690"
+posXRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5f0"
+posYRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5f8"
+posZRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+600"
+rotQyRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+5d8" -- Forward direction (only affected by reset view)
+rotQwRstAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+620"
+currHeadposXAdrr="[[[[[\"LandfallClient-Win64-Shipping.exe\"+02FDA368]+0]+38]+650]+150]+720"
+-- Map postion --
+-- the old one, not sure belong to which object
+mapPosZAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +0"
+mapPosXAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +4"
+mapPosYAddr = "[[[\"LandfallClient-Win64-Shipping.exe\"+02E00EC0]+0]+C8] +8"
+-- CameraComponent Object
+mapCamZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A0"
+mapCamXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A4"
+mapCamYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1A8"
+mapRelZAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E0"
+mapRelXAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E4"
+mapRelYAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+02DFF670]+8]+278]+58]+390] +1E8"
+-- Character CameraComponent Object
+mapChaZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A0"
+mapChaXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A4"
+mapChaYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+400]+3E8] +1A8"
+-- FOculusHMD Object
+FOculusHMDObjBase= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +0"
+mapParentRotZAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +40"
+mapParentRotXAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +44"
+mapParentRotYAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +48"
+mapParentRotWAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +4C"
+mapParentZAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +50"
+mapParentXAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +54"
+mapParentYAddr= "[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8] +58"
+-- FOculusHMD Settings
+FOculusHMDObjSettingsBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+0"
 basePosZAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+70"
 basePosXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+74"
 basePosYAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+78"
@@ -974,42 +1093,26 @@ offOrgXAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+A8]+D4"
 FOculusHMDObjFrameBase= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+B8]+0"
 WorldToMetersScaleWhileInFrameAddr= "[[[[\"LandfallClient-Win64-Shipping.exe\"+02DD70D8]+8]+8]+B8]+B8"
 
-
 -- Cheat ptrs --
 cheatHealthAddr =  "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+7C8]+178"
 cheatSPTimerAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+2C0]+1F0]+F8"
 cheatGrenadeAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+150]+AE1"
 
--- Cheat tables --
+-- AA --
 mrXinputAxisBlock=getAddressList().getMemoryRecordByDescription('Xinput Axis Block')
 mrHealth=getAddressList().getMemoryRecordByDescription('Health AA')
 mrSP=getAddressList().getMemoryRecordByDescription('SP timer AA')
 
--- dev settings--
-switchCamMode(CAM_MODE_FREE)
---mrHealth.Active=true
-mrSP.Active=true
+getAutoAttachList().add(PROCESS_NAME)
 
-createHotkey(pressStart, VK_SCROLL)
-createHotkey(pressStop, VK_PAUSE)
---t1=createTimer(getMainForm(), true) --message output
-t1=createTimer(f, true) --message output
-t2=createTimer(f, true) -- fast timer
-t3=createTimer(f, true) -- form update
-t4=createTimer(f, true) -- cheat value update
-timer_setInterval(t1, 1000)
-timer_onTimer(t1, timer1_tick)
-timer_setInterval(t2, t2_interval)
-timer_onTimer(t2, timer2_tick)
-timer_setInterval(t3, 100)
-timer_onTimer(t3, timer3_tick)
-timer_setInterval(t4, 500)
-timer_onTimer(t4, timer4_tick)
-print("------")
+initHotkey()
+initUI()
+f.show()
 updateUI()
 updateDebugData()
+hackToggle(enHack)
 
-f.show()
+print("------")
 print("Press ScrLk to Start, Pause to stop")
 
 
