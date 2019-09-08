@@ -598,13 +598,26 @@ end
 
 function hackToggle(en)
     enHack=en
+    updataHackButtonCaption()
     if (en) then
-        f.enHack.caption="Running"
         hackStart()
     else
-        f.enHack.caption="Suspended"
         hackStop()
     end
+end
+
+function updataHackButtonCaption()
+    local str
+    if (enHack) then
+        if (checkSceneReady()) then
+            str="Running"
+        else
+            str="Waiting"
+        end
+    else
+        str="Suspended"
+    end
+    f.enHack.caption=str
 end
 
 function uiToggle(mode)
@@ -803,10 +816,12 @@ end
 
 -- slowly update status
 function updateStatus()
-    status.gameExe = checkGameExe()
-    status.scence = checkSceneReady()
-    status.xbc = checkXbcReady()
-    status.character = checkCharacterReady()
+    if (enHack) then
+        status.gameExe = checkGameExe()
+        status.scence = checkSceneReady()
+        status.xbc = checkXbcReady()
+        status.character = checkCharacterReady()
+    end
 end
 function initUI()
     f.caption = hackName.." ( v"..version.." )"
@@ -828,6 +843,7 @@ end
 function updateUI()
     -- Status
     f.statusGameExe.checked=status.gameExe
+    updataHackButtonCaption()
     f.statusXbc.checked = status.xbc
     f.statusScene.checked=status.scence
     if (not status.scence) then
