@@ -426,6 +426,13 @@ function resetCamMode()
     mBaseRot.z=0
     mBaseRot.y=0
     mBaseRot.w=1
+    writeFloat(basePosXAddr, mBasePos.x)
+    writeFloat(basePosZAddr, mBasePos.z)
+    writeFloat(basePosYAddr, mBasePos.y)
+    writeFloat(baseRotZAddr, mBaseRot.z)
+    writeFloat(baseRotYAddr, mBaseRot.y)
+    writeFloat(baseRotXAddr, mBaseRot.x)
+    writeFloat(baseRotWAddr, mBaseRot.w)
     if (camMode==CAM_MODE_FREE) then
         freeCamDeactive()
     end
@@ -543,7 +550,7 @@ end
 function xbcGetState()
     -- Read Xbox Controller state
     xbc = getXBox360ControllerState();
-    if (not (checkXbcReady() or checkGameReady())) then
+    if (not (checkXbcReady() and checkGameReady())) then
        return
     end
 
@@ -804,8 +811,13 @@ function checkCheatUpdateReady()
 end
 
 function updateWorldData()
+    local ws
     if(checkGameReady()) then
-        worldScale=getWorldScale()
+        ws=getWorldScale()
+        if (ws~=worldScale) then
+            worldScale=getWorldScale()
+            resetCamMode()
+        end
         eularParent=getEularParent()
     end
 end
@@ -1012,8 +1024,12 @@ followCamResetDistanceXZ = 1800
 followCamResetHeight = 1800
 -- enable/disable --
 enHack = true
-enCheat = false
 enDebug = true
+if (enDebug) then
+    enCheat = true
+else
+    enCheat = false
+end
 -- software info
 hackName= "Landfall Camera hack"
 version = "1.0"
