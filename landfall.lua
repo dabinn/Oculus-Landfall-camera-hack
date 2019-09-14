@@ -665,7 +665,7 @@ function cheatAAToggle(en)
         en=false
     end
     --mrHealth.Active=en
-    mrSP.Active=en
+    --mrSP.Active=en
 end
 
 function cheatUpdate()
@@ -674,7 +674,7 @@ function cheatUpdate()
     end
     cheatUpdateNum("Health", "Float", 3000)
     cheatUpdateNum("SPTimer", "Float", -200)
-    --cheatUpdateNum("Grenade", "Bytes", 3)
+    cheatUpdateNum("Grenade", "Bytes", 3)
 end
 
 function cheatUpdateNum(cheatName, type, value) 
@@ -800,7 +800,7 @@ function checkCharacterReady()
     return readFloat(mapChaXAddr) ~= nil
 end
 function checkCheatUpdateReady()
-    return readFloat(cheatGrenadeAddr) ~= nil
+    return readFloat(cheatHealthAddr) ~= nil
 end
 
 function updateWorldData()
@@ -1130,8 +1130,8 @@ WorldToMetersScaleWhileInFrameAddr= "[[[[\"LandfallClient-Win64-Shipping.exe\"+0
 
 -- Cheat ptrs --
 cheatHealthAddr =  "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+7C8]+178"
-cheatSPTimerAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+2C0]+1F0]+F8"
-cheatGrenadeAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+150]+AE1"
+cheatSPTimerAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+310]+90]+F8"
+cheatGrenadeAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+3A8]+658]+78]+AE1"
 
 -- AA --
 mrXinputAxisBlock=getAddressList().getMemoryRecordByDescription('Xinput Axis Block')

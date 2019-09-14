@@ -165,7 +165,8 @@ dealloc(newmem)
       <CheatEntries>
         <CheatEntry>
           <ID>231</ID>
-          <Description>"Health"</Description>
+          <Description>"Health (Man &amp; Robot)"</Description>
+          <LastState Value="3000" RealAddress="1B9DFBDE8B8"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
           <Offsets>
@@ -176,39 +177,30 @@ dealloc(newmem)
           </Offsets>
         </CheatEntry>
         <CheatEntry>
-          <ID>246</ID>
-          <Description>"SP Timer"</Description>
+          <ID>588</ID>
+          <Description>"SP Timer (Man &amp; Robot)"</Description>
+          <LastState Value="-200" RealAddress="1B9967048B8"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
           <Offsets>
             <Offset>F8</Offset>
-            <Offset>1F0</Offset>
-            <Offset>2C0</Offset>
+            <Offset>90</Offset>
+            <Offset>310</Offset>
             <Offset>390</Offset>
             <Offset>30</Offset>
           </Offsets>
         </CheatEntry>
         <CheatEntry>
-          <ID>572</ID>
-          <Description>"Grenade (ptr +AE1)"</Description>
+          <ID>589</ID>
+          <Description>"Grenade (ptr +AE1) (Man only)"</Description>
+          <LastState Value="3" RealAddress="1B9A4E47B71"/>
           <VariableType>Byte</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
           <Offsets>
             <Offset>AE1</Offset>
+            <Offset>78</Offset>
             <Offset>658</Offset>
             <Offset>3A8</Offset>
-            <Offset>30</Offset>
-          </Offsets>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>583</ID>
-          <Description>"Grenade (ptr +AE1) (Changed on robot)"</Description>
-          <VariableType>Byte</VariableType>
-          <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
-          <Offsets>
-            <Offset>AE1</Offset>
-            <Offset>150</Offset>
-            <Offset>390</Offset>
             <Offset>30</Offset>
           </Offsets>
         </CheatEntry>
@@ -737,6 +729,7 @@ dealloc(newmem)
       <ID>160</ID>
       <Description>"LibOVR"</Description>
       <Options moManualExpandCollapse="1"/>
+      <LastState Value="0000000000000013" RealAddress="1B9C201E560"/>
       <ShowAsHex>1</ShowAsHex>
       <Color>008000</Color>
       <VariableType>8 Bytes</VariableType>
@@ -752,6 +745,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>552</ID>
           <Description>"New X"</Description>
+          <LastState Value="-0.531248608890529" RealAddress="1B9C201E6D8"/>
           <VariableType>Double</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02FDA368</Address>
           <Offsets>
@@ -907,6 +901,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>535</ID>
       <Description>"FOculusHMD Object"</Description>
+      <LastState Value="00007FF7364EEDE8" RealAddress="1B9FDE13500"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>8 Bytes</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
@@ -919,6 +914,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>581</ID>
           <Description>"LateUpdateParentToWorld.Rotation.Z"</Description>
+          <LastState Value="0" RealAddress="1B9FDE13540"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -930,6 +926,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>582</ID>
           <Description>"LateUpdateParentToWorld.Translation.Z"</Description>
+          <LastState Value="-51458.91797" RealAddress="1B9FDE13550"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -944,6 +941,7 @@ dealloc(newmem)
       <ID>541</ID>
       <Description>"FOculusHMD Settings"</Description>
       <Options moManualExpandCollapse="1"/>
+      <LastState Value="00007FF7364EED48" RealAddress="1B9D71A3740"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>8 Bytes</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
@@ -957,6 +955,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>542</ID>
           <Description>"WorldToMetersScale"</Description>
+          <LastState Value="100" RealAddress="1B9D71A3778"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -969,6 +968,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>580</ID>
           <Description>"BaseOffset.Z (FW- BK+)"</Description>
+          <LastState Value="0" RealAddress="1B9D71A37B0"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -981,6 +981,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>544</ID>
           <Description>"BaseOffset.X (L+ R-)"</Description>
+          <LastState Value="0" RealAddress="1B9D71A37B4"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -993,6 +994,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>543</ID>
           <Description>"BaseOffset.Y (Up- Dn+)"</Description>
+          <LastState Value="0" RealAddress="1B9D71A37B8"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1005,6 +1007,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>550</ID>
           <Description>"BaseOrientation.Z (-CW)"</Description>
+          <LastState Value="0" RealAddress="1B9D71A37C0"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1017,6 +1020,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>549</ID>
           <Description>"BaseOrientation.X (-Dn)"</Description>
+          <LastState Value="0" RealAddress="1B9D71A37C4"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1029,6 +1033,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>548</ID>
           <Description>"BaseOrientation.Y (L+ R-)"</Description>
+          <LastState Value="0" RealAddress="1B9D71A37C8"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1041,6 +1046,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>547</ID>
           <Description>"BaseOrientation.W"</Description>
+          <LastState Value="1" RealAddress="1B9D71A37CC"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1053,6 +1059,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>546</ID>
           <Description>"PositionOffset.Z"</Description>
+          <LastState Value="0" RealAddress="1B9D71A3810"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1065,6 +1072,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>545</ID>
           <Description>"PositionOffset.X"</Description>
+          <LastState Value="0" RealAddress="1B9D71A3814"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1080,6 +1088,7 @@ dealloc(newmem)
       <ID>554</ID>
       <Description>"FOculusHMD Frame"</Description>
       <Options moManualExpandCollapse="1"/>
+      <LastState Value="00007FF7364EED70" RealAddress="1B9906CFA80"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>8 Bytes</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
@@ -1093,6 +1102,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>555</ID>
           <Description>"WorldToMetersScale"</Description>
+          <LastState Value="0.7044149637" RealAddress="1B9906CFAB8"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1105,6 +1115,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>556</ID>
           <Description>"WorldToMetersScaleWhileInFrame"</Description>
+          <LastState Value="3600" RealAddress="1B9906CFB38"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DD70D8</Address>
           <Offsets>
@@ -1120,6 +1131,7 @@ dealloc(newmem)
       <ID>523</ID>
       <Description>"CamComponent Object"</Description>
       <Options moManualExpandCollapse="1"/>
+      <LastState Value="00007FF73603B3A8" RealAddress="1B9AD0F8960"/>
       <ShowAsHex>1</ShowAsHex>
       <VariableType>8 Bytes</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
@@ -1134,6 +1146,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>531</ID>
           <Description>"ComponentToWorld.Trans Z"</Description>
+          <LastState Value="-51403.05469" RealAddress="1B9AD0F8B00"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -1147,6 +1160,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>526</ID>
           <Description>"ComponentToWorld.Trans X"</Description>
+          <LastState Value="-20589.41602" RealAddress="1B9AD0F8B04"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -1160,6 +1174,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>525</ID>
           <Description>"ComponentToWorld.Trans Y"</Description>
+          <LastState Value="11929.81641" RealAddress="1B9AD0F8B08"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -1173,6 +1188,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>524</ID>
           <Description>"Relative Z"</Description>
+          <LastState Value="55.86317825" RealAddress="1B9AD0F8B40"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -1186,6 +1202,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>528</ID>
           <Description>"Relative X"</Description>
+          <LastState Value="-6.533203125" RealAddress="1B9AD0F8B44"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -1199,6 +1216,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>527</ID>
           <Description>"Relative Y"</Description>
+          <LastState Value="-78.18367004" RealAddress="1B9AD0F8B48"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02DFF670</Address>
           <Offsets>
@@ -1214,6 +1232,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>365</ID>
       <Description>"Character Component Object"</Description>
+      <LastState Value="00007FF73606CDB8" RealAddress="1B99BAEB050"/>
       <ShowAsHex>1</ShowAsHex>
       <Color>0080FF</Color>
       <VariableType>8 Bytes</VariableType>
@@ -1228,6 +1247,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>537</ID>
           <Description>"Character pos Z (fwd plus)"</Description>
+          <LastState Value="-49947.51562" RealAddress="1B99BAEB1F0"/>
           <Color>0080FF</Color>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
@@ -1241,6 +1261,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>368</ID>
           <Description>"Character pos X (right plus)"</Description>
+          <LastState Value="-21098.95508" RealAddress="1B99BAEB1F4"/>
           <Color>0080FF</Color>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
@@ -1254,6 +1275,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>367</ID>
           <Description>"Character pos Y (top plus)"</Description>
+          <LastState Value="9810.450195" RealAddress="1B99BAEB1F8"/>
           <Color>0080FF</Color>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+03091A50</Address>
@@ -1275,6 +1297,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>511</ID>
           <Description>"HMD map pos Z"</Description>
+          <LastState Value="-51403.71875" RealAddress="1B98787A1E0"/>
           <ShowAsSigned>0</ShowAsSigned>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
@@ -1287,6 +1310,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>517</ID>
           <Description>"HMD map pos X"</Description>
+          <LastState Value="-20700.08203" RealAddress="1B98787A1E4"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
           <Offsets>
@@ -1298,6 +1322,7 @@ dealloc(newmem)
         <CheatEntry>
           <ID>515</ID>
           <Description>"HMD map pos Y"</Description>
+          <LastState Value="11927.18652" RealAddress="1B98787A1E8"/>
           <VariableType>Float</VariableType>
           <Address>"LandfallClient-Win64-Shipping.exe"+02E00EC0</Address>
           <Offsets>
@@ -1322,6 +1347,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>585</ID>
       <Description>"pointerscan result"</Description>
+      <LastState Value="100" RealAddress="1B98F1D64B8"/>
       <VariableType>Float</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+02FF6548</Address>
       <Offsets>
@@ -1334,6 +1360,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>586</ID>
       <Description>"pointerscan result"</Description>
+      <LastState Value="3000" RealAddress="1B9DFBDE8B8"/>
       <VariableType>Float</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+030A6C00</Address>
       <Offsets>
@@ -1347,6 +1374,7 @@ dealloc(newmem)
     <CheatEntry>
       <ID>587</ID>
       <Description>"pointerscan result"</Description>
+      <LastState Value="3000" RealAddress="1B9DFBDE8B8"/>
       <VariableType>Float</VariableType>
       <Address>"LandfallClient-Win64-Shipping.exe"+030A6C00</Address>
       <Offsets>
@@ -1619,6 +1647,28 @@ dealloc(newmem)
         <Byte>EB</Byte>
         <Byte>FF</Byte>
         <Byte>FF</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Health Regen: je LandfallClient-Win64-Shipping.UBGHealthComponent::TickComponent+53</Description>
+      <AddressString>LandfallClient-Win64-Shipping.exe+1AF4DD</AddressString>
+      <Before>
+        <Byte>90</Byte>
+        <Byte>02</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>74</Byte>
+        <Byte>34</Byte>
+      </Actual>
+      <After>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>59</Byte>
+        <Byte>B3</Byte>
+        <Byte>3C</Byte>
       </After>
     </CodeEntry>
   </CheatCodes>
@@ -10641,7 +10691,7 @@ function cheatAAToggle(en)
         en=false
     end
     --mrHealth.Active=en
-    mrSP.Active=en
+    --mrSP.Active=en
 end
 
 function cheatUpdate()
@@ -10650,7 +10700,7 @@ function cheatUpdate()
     end
     cheatUpdateNum("Health", "Float", 3000)
     cheatUpdateNum("SPTimer", "Float", -200)
-    --cheatUpdateNum("Grenade", "Bytes", 3)
+    cheatUpdateNum("Grenade", "Bytes", 3)
 end
 
 function cheatUpdateNum(cheatName, type, value)
@@ -10776,7 +10826,7 @@ function checkCharacterReady()
     return readFloat(mapChaXAddr) ~= nil
 end
 function checkCheatUpdateReady()
-    return readFloat(cheatGrenadeAddr) ~= nil
+    return readFloat(cheatHealthAddr) ~= nil
 end
 
 function updateWorldData()
@@ -11106,8 +11156,8 @@ WorldToMetersScaleWhileInFrameAddr= "[[[[\"LandfallClient-Win64-Shipping.exe\"+0
 
 -- Cheat ptrs --
 cheatHealthAddr =  "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+7C8]+178"
-cheatSPTimerAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+2C0]+1F0]+F8"
-cheatGrenadeAddr = "[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+150]+AE1"
+cheatSPTimerAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+390]+310]+90]+F8"
+cheatGrenadeAddr = "[[[[[\"LandfallClient-Win64-Shipping.exe\"+03091A50]+30]+3A8]+658]+78]+AE1"
 
 -- AA --
 mrXinputAxisBlock=getAddressList().getMemoryRecordByDescription('Xinput Axis Block')
