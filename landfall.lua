@@ -632,7 +632,7 @@ function uiToggle(mode)
         f.enDebug.checked = false
         f.p_debugInfo.visible = false
         f.p_help.visible = true
-        f.height = 400
+        f.height = 530
     elseif (mode=="debug") then
         f.enHelp.checked = false
         f.p_help.visible = false
@@ -1028,6 +1028,7 @@ followCamResetDistanceXZ = 1800
 followCamResetHeight = 1800
 -- enable/disable --
 enHack = true
+--enDebug = true
 enDebug = false
 if (enDebug) then
     enCheat = true
