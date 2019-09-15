@@ -10579,7 +10579,12 @@ function uiEnDebugClicked(sender)
 end
 function uiFormClose(sender)
     hackStop()
-    return caHide --Possible options: caHide, caFree, caMinimize, caNone
+    if (enDebug) then
+        return caHide --Possible options: caHide, caFree, caMinimize, caNone
+    else
+        closeCE()
+        return caFree --Possible options: caHide, caFree, caMinimize, caNone
+    end
 end
 
 function hackToggle(en)
