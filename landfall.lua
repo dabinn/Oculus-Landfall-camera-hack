@@ -1,8 +1,7 @@
-function dprint()
-    if (string.len(dmsg) >1) then
-        print(dmsg)
-        dmsg = ""
-      end
+function dprint(msg)
+    if (enDebug) then
+        print(msg)
+    end
 end
 
 -- create Quaternion table --
@@ -325,13 +324,13 @@ function followCamAcitve()
     if (not followCamReset) then
         local angle=rotateWithParentY(eularBase.y)
         local r=vectorRotate2D(d.x, d.z, -angle)
-        --print("followCAM switch: d.x:"..d.x..", d.z:"..d.z..", r.x:"..r.x..", r.z"..r.z)
+        --dprint("followCAM switch: d.x:"..d.x..", d.z:"..d.z..", r.x:"..r.x..", r.z"..r.z)
         mBasePos.x =  -r.x/worldScale
         mBasePos.z =  -r.z/worldScale
         writeFloat(basePosXAddr, mBasePos.x)
         writeFloat(basePosZAddr, mBasePos.z)
     else
-        --print("followCAM reset")
+        --dprint("followCAM reset")
         -- When cam position is too far
         -- Reset followCAM to default distance
         mBasePos.x =  0/worldScale
@@ -357,7 +356,7 @@ function followCamDeactive()
     local r=vectorRotate2D(d.x, d.z, angle)
     local newOffOrgX=readFloat(offOrgXAddr)-followCamOriginFix.x-r.x*worldScale
     local newOffOrgZ=readFloat(offOrgZAddr)-followCamOriginFix.z-r.z*worldScale
-    --print("deactive: dx:"..d.x..", dz:"..d.z..", rx:"..r.x..", .z"..r.z)
+    --dprint("deactive: dx:"..d.x..", dz:"..d.z..", rx:"..r.x..", .z"..r.z)
     mBasePos.x=0
     mBasePos.z=0
     -- no need to reset Y position, it always use basePos to move in both mode
@@ -505,14 +504,14 @@ function xbcCheckButtons()
             -- button pressed
             -- Register a botton state
             if (xbcButtonStat[btn]==nil or xbcButtonStat[btn]==0) then
-                --print("> "..btn.." DOWN")
+                --dprint("> "..btn.." DOWN")
                 xbcButtonStat[btn]=1
             else
                 --button hold
                 if (xbcButtonStat[btn] ~= -1) then
                     xbcButtonStat[btn]=xbcButtonStat[btn]+1
                     if (xbcButtonStat[btn] >= buttonHoldThreshold) then
-                        --print("> "..btn.." HOLD")
+                        --dprint("> "..btn.." HOLD")
                         xbcButtonStat[btn]=-1
                         -- Call button function if exist
                         local btnFuncName= "on_"..btn.."_hold"
@@ -532,7 +531,7 @@ function xbcCheckButtons()
             -- BTN released, do something
             if (xbcButtonStat[btn] and xbcButtonStat[btn]>0) then
                 -- UnRegister a botton state
-                --print("> "..btn.." UP")
+                --dprint("> "..btn.." UP")
 
                 -- Call button function if exist
                 local btnFuncName= "on_"..btn.."_released"
@@ -730,12 +729,12 @@ function timerStart()
 --    timer_setEnabled(t2,true)
 --    timer_setEnabled(t3,true)
 --    timer_setEnabled(t4,true)
-    print("Started")
+    dprint("Started")
 end
 
 function timerStop()
     timerRunning=false
-    print("Stopped")
+    dprint("Stopped")
 end
 function timer1_tick(timer)  -- 1 second timer
     updateDebugData()
@@ -762,7 +761,7 @@ end
 
 function timerCheckDestroy(timer)
     if (not timerRunning) then
-        print("Timer "..tostring(timer).." destroyed.")
+        dprint("Timer "..tostring(timer).." destroyed.")
         timer.destroy()
     end
 end
@@ -1024,7 +1023,7 @@ followCamResetDistanceXZ = 1800
 followCamResetHeight = 1800
 -- enable/disable --
 enHack = true
-enDebug = true
+enDebug = false
 if (enDebug) then
     enCheat = true
 else
@@ -1161,8 +1160,8 @@ updateUI()
 updateDebugData()
 hackToggle(enHack)
 
-print("------")
-print("Press ScrLk to Start, Pause to stop")
+dprint("------")
+dprint("Press ScrLk to Start, Pause to stop")
 
 
 
