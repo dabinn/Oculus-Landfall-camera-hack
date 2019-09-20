@@ -1,4 +1,5 @@
 # Oculus Landfall camera hack
-Free camera, follow camera and trainer for Landfall game
+Free camera, Auto-follow camera and trainer for Landfall game
 
-(Work in progress)
+Video:
+https://www.youtube.com/watch?v=KQuLiJ_eWWk
